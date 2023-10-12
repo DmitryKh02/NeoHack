@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum Priority {
-    LOW ("Low"),
-    MEDIUM ("Medium"),
-    HIGH ("High");
+    LOW("Low"),
+    MEDIUM("Medium"),
+    HIGH("High");
 
     private final String value;
 }

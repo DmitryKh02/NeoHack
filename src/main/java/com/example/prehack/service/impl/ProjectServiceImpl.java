@@ -3,11 +3,10 @@ package com.example.prehack.service.impl;
 
 import com.example.prehack.exception.ResourceNotFoundException;
 import com.example.prehack.mapper.ProjectMapper;
-import com.example.prehack.mapper.TaskMapper;
 import com.example.prehack.model.Project;
-import com.example.prehack.model.Task;
 import com.example.prehack.model.User;
 import com.example.prehack.repository.ProjectRepository;
+import com.example.prehack.repository.UserRepository;
 import com.example.prehack.service.ProjectService;
 import com.example.prehack.service.UserService;
 import com.example.prehack.web.dto.ProjectDTO;
@@ -26,7 +25,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserService userService;
-
     private final UserRepository userRepository;
     private final ProjectMapper projectMapper;
 

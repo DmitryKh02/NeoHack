@@ -1,6 +1,9 @@
 package com.example.prehack.exception.global;
 
-import com.example.prehack.exception.*;
+import com.example.prehack.exception.BadLoginOrPasswordException;
+import com.example.prehack.exception.ResourceNotFoundException;
+import com.example.prehack.exception.TokenLifetimeExpiredException;
+import com.example.prehack.exception.UserAlreadyExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDate;
 
-@RestControllerAdvice
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

@@ -183,6 +183,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     /**
      * Обращаем внимание, что храним не логин, а почту
+     *
      * @param username имя пользователя
      * @return ?
      * @throws UsernameNotFoundException имя пользователя не найдено
