@@ -3,12 +3,14 @@ package com.example.prehack.service.impl;
 import com.example.prehack.exception.ResourceNotFoundException;
 import com.example.prehack.mapper.TaskMapper;
 import com.example.prehack.model.Project;
+import com.example.prehack.model.Role;
 import com.example.prehack.model.Task;
 import com.example.prehack.model.User;
 import com.example.prehack.model.enumformodel.Priority;
 import com.example.prehack.model.enumformodel.Status;
 import com.example.prehack.repository.TaskRepository;
 import com.example.prehack.service.ProjectService;
+import com.example.prehack.service.RoleService;
 import com.example.prehack.service.TaskService;
 import com.example.prehack.service.UserService;
 import com.example.prehack.web.dto.TaskDTO;
@@ -22,13 +24,11 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
-
     private final TaskRepository taskRepository;
-
     private final ProjectService projectService;
-
     private final UserService userService;
 
+    private final RoleService roleService;
     private final TaskMapper taskMapper;
 
     @Override
@@ -47,6 +47,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> getAllUsersTask(Long userId) {
+        log.info("[getAllUsersTask] >> userId: {}", userId);
+
+        User user = userService.getUserById(userId);
+
+        List<Task> tasks = taskRepository.findAllByUsersContaining(user);
+
+        log.info("[getAllUsersTask] << result: {}", tasks);
+
+        return tasks;
+    }
+
+    @Override
     public List<Task> getAllTaskFromProject(Long projectId) {
         log.info("[getAllTaskFromProject] >> projectId: {}", projectId);
 
@@ -60,11 +73,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task createTask(TaskDTO taskDTO, Long projectId) {
+    public Task createTask(TaskDTO taskDTO, String email) {
         log.info("[createTask] >> taskDTO: {}", taskDTO);
+        //Создание и без привязки к проекту и с привязкой и от лица менеджера и от лица пользователей
+        User user = userService.getUserByEmail(email);
+        Role role = roleService.getRoleByName("MANAGER");
 
         Task task = taskMapper.taskDTOToTask(taskDTO);
-        task.setProject(projectService.getProjectById(projectId));
+
+        if (taskDTO.getProjectId() == null) {
+            task.setProject(projectService.getProjectById(taskDTO.getProjectId()));
+        }
+
+        if (!user.getRoles().contains(role)){
+            task.setName("");
+        }
 
         Task savedTask = taskRepository.save(task);
 
@@ -120,7 +143,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task savedTask = taskRepository.save(task);
 
-        log.info("[setNewPriority] << result : {}", savedTask);
+        log.info("[setUserForTask] << result : {}", savedTask);
 
         return savedTask;
     }
@@ -134,7 +157,21 @@ public class TaskServiceImpl implements TaskService {
 
         Task savedTask = taskRepository.save(task);
 
-        log.info("[setNewPriority] << result : {}", savedTask);
+        log.info("[setNewStatus] << result : {}", savedTask);
+
+        return savedTask;
+    }
+
+    @Override
+    public Task changeNameAboutTask(Long taskId, TaskDTO taskDTO) {
+        log.info("[changeNameAboutTask] >> taskId: {}, taskDTO: {}", taskId, taskDTO);
+        Task task = getTaskById(taskId);
+
+        task.setName(taskDTO.getName());
+
+        Task savedTask = taskRepository.save(task);
+
+        log.info("[changeNameAboutTask] << result : {}", savedTask);
 
         return savedTask;
     }

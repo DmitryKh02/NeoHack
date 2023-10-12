@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .antMatchers("/admins/**").hasRole("ADMIN")*/
                 .antMatchers("/tasks/**").authenticated()
                 .antMatchers("/users/**").authenticated()
-                .antMatchers("/projects/**").authenticated()
+                .antMatchers("/manager/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

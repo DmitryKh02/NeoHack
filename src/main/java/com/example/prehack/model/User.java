@@ -31,7 +31,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(
             name = "user_project",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -39,7 +39,7 @@ public class User {
     )
     private List<Project> projects;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(
             name = "user_task",
             joinColumns = @JoinColumn(name = "user_id"),

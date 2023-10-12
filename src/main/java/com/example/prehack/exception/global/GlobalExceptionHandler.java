@@ -13,8 +13,6 @@ import java.time.LocalDate;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
-
     @ExceptionHandler(BadLoginOrPasswordException.class)
     public ResponseEntity<?> badLoginOrPasswordException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
@@ -22,7 +20,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
-
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> resourceNotFoundException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
@@ -30,7 +27,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
-
     @ExceptionHandler(UserAlreadyExistException.class)
     public ResponseEntity<?> userAlreadyExistException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
@@ -38,7 +34,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
-
     @ExceptionHandler(TokenLifetimeExpiredException.class)
     public ResponseEntity<?> tokenLifetimeExpiredException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
@@ -46,7 +41,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);

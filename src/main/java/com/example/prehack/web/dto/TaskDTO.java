@@ -30,4 +30,6 @@ public class TaskDTO {
 
     private LocalDateTime dataFinish;
 
+    private Long projectId;
+
 }

@@ -9,6 +9,7 @@ import com.example.prehack.model.Task;
 import com.example.prehack.model.User;
 import com.example.prehack.repository.ProjectRepository;
 import com.example.prehack.repository.TaskRepository;
+import com.example.prehack.repository.UserRepository;
 import com.example.prehack.service.ProjectService;
 import com.example.prehack.service.UserService;
 import com.example.prehack.web.dto.ProjectDTO;
@@ -26,9 +27,9 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-
     private final UserService userService;
 
+    private final UserRepository userRepository;
     private final ProjectMapper projectMapper;
 
     @Override
@@ -65,6 +66,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = projectMapper.projectDTOToProject(projectDTO);
 
+        //FIXME Не сохраняются пользователи в связке с проектами
         List<User> users = new ArrayList<>();
         for (UserEmailsForProjectDTO email: projectDTO.getUserEmails()){
             users.add(userService.getUserByEmail(email.getEmail()));
@@ -80,7 +82,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteProject(Long projectId) {
-
+        //TODO реализация отсутствует
     }
 
     @Override
@@ -95,18 +97,27 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = getProjectById(id);
 
         User user = userService.getUserByEmail(userEmail);
-        List<User> users = project.getUsers();
-        if (users.isEmpty()){
-            project.setUsers(List.of(user));
-        }
+
+        //FIXME БЕСКОНЕЧНО СОХРАНЕНИЕ ПОЛЬЗОВАТЕЛЕЙ
+        /*if (users.isEmpty()){*/
+        user.getProjects().add(project);
+
+        User user1 = userRepository.save(user);
+        /*}
         else {
             project.getUsers().add(user);
-        }
+        }*/
 
-        Project savedProject = projectRepository.save(project);
+        //Project savedProject = projectRepository.save(project);
 
-        log.info("[setNewUserForProject] << result : {}", savedProject);
+        log.info("[setNewUserForProject] << result : {}", project);
 
-        return savedProject;
+        return project;
+    }
+
+    @Override
+    public Project setTaskToProject(Long projectId, Long taskId) {
+        //TODO реализация отсутствует
+        return null;
     }
 }
