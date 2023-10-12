@@ -1,7 +1,8 @@
 package com.example.prehack.mapper;
 
 import com.example.prehack.model.User;
-import com.example.prehack.web.dto.*;
+import com.example.prehack.web.dto.RegistrationUserDTO;
+import com.example.prehack.web.dto.UserInfoDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

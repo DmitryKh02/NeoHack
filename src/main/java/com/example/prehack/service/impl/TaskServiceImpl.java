@@ -85,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
             task.setProject(projectService.getProjectById(taskDTO.getProjectId()));
         }
 
-        if (!user.getRoles().contains(role)){
+        if (!user.getRoles().contains(role)) {
             task.setName("");
         }
 
@@ -134,10 +134,9 @@ public class TaskServiceImpl implements TaskService {
         User user = userService.getUserByEmail(userEmail);
 
         List<User> users = task.getUsers();
-        if (users.isEmpty()){
+        if (users.isEmpty()) {
             task.setUsers(List.of(user));
-        }
-        else {
+        } else {
             task.getUsers().add(user);
         }
 

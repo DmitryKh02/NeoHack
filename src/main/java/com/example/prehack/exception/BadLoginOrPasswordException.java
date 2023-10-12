@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 public class BadLoginOrPasswordException extends RuntimeException {
 
-    public BadLoginOrPasswordException(String message){
+    public BadLoginOrPasswordException(String message) {
         super(message);
     }
 

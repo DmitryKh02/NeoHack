@@ -1,6 +1,5 @@
 package com.example.prehack.web.dto;
 
-import com.example.prehack.model.Project;
 import com.example.prehack.model.enumformodel.Priority;
 import com.example.prehack.model.enumformodel.Status;
 import lombok.AllArgsConstructor;
@@ -8,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data

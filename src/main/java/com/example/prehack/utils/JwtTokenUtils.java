@@ -62,7 +62,7 @@ public class JwtTokenUtils {
 
         List<String> totalList = new ArrayList<>();
 
-        for (Object ob : list){
+        for (Object ob : list) {
             totalList.add(ob.toString());
         }
 

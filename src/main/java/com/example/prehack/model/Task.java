@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -45,10 +44,10 @@ public class Task {
     @Column(name = "data_finish")
     private Timestamp dataFinish;
 
-    @ManyToMany(mappedBy="tasks")
+    @ManyToMany(mappedBy = "tasks")
     private List<User> users;
     @ManyToOne
-    @JoinColumn(name="project_id", nullable=false)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
 

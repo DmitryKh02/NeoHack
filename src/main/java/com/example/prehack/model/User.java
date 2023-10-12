@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -31,7 +30,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(cascade = { CascadeType.MERGE })
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "user_project",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -39,7 +38,7 @@ public class User {
     )
     private List<Project> projects;
 
-    @ManyToMany(cascade = { CascadeType.MERGE })
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "user_task",
             joinColumns = @JoinColumn(name = "user_id"),

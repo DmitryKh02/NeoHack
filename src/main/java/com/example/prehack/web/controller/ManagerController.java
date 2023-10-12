@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -114,7 +112,7 @@ public class ManagerController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/project/{projectId}/tasks")
     public ResponseEntity<?> getAllTaskInProject(@PathVariable(value = "projectId") Long projectId) {
-        log.info("[getAllTaskInProject] >> projectId: {}",projectId);
+        log.info("[getAllTaskInProject] >> projectId: {}", projectId);
 
         List<Task> taskList = taskService.getAllTaskFromProject(projectId);
 
@@ -129,7 +127,7 @@ public class ManagerController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/project/{projectId}")
     public ResponseEntity<?> getInfoAboutProject(@PathVariable(value = "projectId") Long projectId) {
-        log.info("[getAllTaskInProject] >> projectId: {}",projectId);
+        log.info("[getAllTaskInProject] >> projectId: {}", projectId);
 
         Project project = projectService.getProjectById(projectId);
 
@@ -137,13 +135,14 @@ public class ManagerController {
 
         return ResponseEntity.ok().body(project);
     }
+
     @Operation(summary = "getAllTaskFromUser")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/user/{userId}/tasks")
     public ResponseEntity<?> getAllTaskFromUser(@PathVariable(value = "userId") Long userId) {
-        log.info("[getAllTaskFromUser] >> userId: {}",userId);
+        log.info("[getAllTaskFromUser] >> userId: {}", userId);
 
         List<Task> taskList = taskService.getAllUsersTask(userId);
 
@@ -177,7 +176,7 @@ public class ManagerController {
                                                    @Valid @RequestBody TaskDTO taskDTO) {
         log.info("[changeTaskInformation] >> taskId:{}, taskDTO: {}", taskId, taskDTO);
 
-        Task task = taskService.updateTask(taskId ,taskDTO);
+        Task task = taskService.updateTask(taskId, taskDTO);
 
         log.info("[changeTaskInformation] << result: {}", task);
 

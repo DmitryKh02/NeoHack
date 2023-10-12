@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         return user;
     }
+
     @Override
     public User getUserByName(String name) {
 
@@ -67,6 +68,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         return user;
     }
+
     @Override
     public User getUserById(Long userId) {
         log.info("[getUserById] >> userId: {}", userId);
@@ -105,7 +107,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     @Override
-    public String setUserToSecurityAndCreateToken(String email){
+    public String setUserToSecurityAndCreateToken(String email) {
         log.info("[setUserToSecurityAndCreateToken] >> create token for email: {}", email);
 
         UserDetails userDetails = loadUserByUsername(email);
@@ -179,6 +181,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     /**
      * Образаем пвнимание что храним не логин а почту
+     *
      * @param username
      * @return
      * @throws UsernameNotFoundException
