@@ -11,7 +11,6 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
     User registrationUserDTOToUser(RegistrationUserDTO requestDTO);
 
-
     User UserInfoDTOToUser(UserInfoDTO requestDTO, @MappingTarget User user);
 
     User UserInfoDTOToUserFull(UserInfoDTO requestDTO);

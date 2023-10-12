@@ -1,9 +1,6 @@
 package com.example.prehack.exception.global;
 
-import com.example.prehack.exception.BadLoginOrPasswordException;
-import com.example.prehack.exception.ResourceNotFoundException;
-import com.example.prehack.exception.TokenLifetimeExpiredException;
-import com.example.prehack.exception.UserAlreadyExistException;
+import com.example.prehack.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,44 +12,46 @@ import java.time.LocalDate;
 
 @RestControllerAdvice
 @Slf4j
+@RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(BadLoginOrPasswordException.class)
-    public ResponseEntity<?> badLoginOrPasswordException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> badLoginOrPasswordException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.UNAUTHORIZED.value(), ConstantErrorCode.BUSINESS_ERROR_CODE_BAD_LOGIN_PASSWORD, LocalDate.now(), ex.getMessage(), request.getDescription(true));
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDetails);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> resourceNotFoundException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> resourceNotFoundException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), ConstantErrorCode.BUSINESS_ERROR_CODE_VALIDATE, LocalDate.now(), ex.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
 
     @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<?> userAlreadyExistException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> userAlreadyExistException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.UNAUTHORIZED.value(), ConstantErrorCode.BUSINESS_ERROR_CODE_VALIDATE, LocalDate.now(), ex.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDetails);
     }
 
     @ExceptionHandler(TokenLifetimeExpiredException.class)
-    public ResponseEntity<?> tokenLifetimeExpiredException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> tokenLifetimeExpiredException(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), ConstantErrorCode.BUSINESS_ERROR_CODE_LIFETIME_TOKEN, LocalDate.now(), ex.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorDetails> globalExceptionHandler(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.INTERNAL_SERVER_ERROR.value(), ConstantErrorCode.BUSINESS_ERROR_CODE_SERVER, LocalDate.now(), ex.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetails);
     }
 }

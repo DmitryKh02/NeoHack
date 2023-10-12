@@ -1,5 +1,8 @@
 package com.example.prehack.model.enumformodel;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum Status {
     BLOCKED,
     OPENED,

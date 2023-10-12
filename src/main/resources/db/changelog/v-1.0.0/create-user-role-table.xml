@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet id="create-user-role-table" author="Dmitrii">
+        <sql>
+            CREATE TABLE IF NOT EXISTS public.user_role
+            (
+                user_id  bigserial NOT NULL,
+                role_id bigserial NOT NULL,
+                CONSTRAINT user_role_pkey PRIMARY KEY (user_id, role_id),
+                CONSTRAINT jasijjtsgnsdsakgsknnslndfnj FOREIGN KEY (user_id)
+                REFERENCES public.users (user_id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION,
+                CONSTRAINT gtbwebgsldhbsuhhgdgudsghuds FOREIGN KEY (role_id)
+                REFERENCES public.role (role_id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION
+                );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

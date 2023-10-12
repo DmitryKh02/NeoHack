@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public String createUser(RegistrationUserDTO registrationUserDTO) {
         log.info("[createUser] >> name: {}", registrationUserDTO.getUserName());
 
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             throw new UserAlreadyExistException("Такой пользователь уже существует: " + registrationUserDTO.getUserName());
         }
 
-        //TOdo выбор роли при регистрации
+        //TODO выбор роли при регистрации
         User user = userMapper.registrationUserDTOToUser(registrationUserDTO);
         user.setPassword(passwordEncoder.encode(registrationUserDTO.getPassword()));
         user.setRoles(List.of(roleService.getRoleByName("ROLE_USER")));
@@ -169,6 +170,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return users;
     }
 
+    //TODO в будущую реализацию, пока не трогаем
     @Override
     public Boolean userEmailConfirmation(String sesCode) {
         return null;
@@ -180,11 +182,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     /**
-     * Образаем пвнимание что храним не логин а почту
-     *
-     * @param username
-     * @return
-     * @throws UsernameNotFoundException
+     * Обращаем внимание, что храним не логин, а почту
+     * @param username имя пользователя
+     * @return ?
+     * @throws UsernameNotFoundException имя пользователя не найдено
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

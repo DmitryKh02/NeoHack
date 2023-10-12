@@ -18,7 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "tasks")
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
@@ -46,6 +45,7 @@ public class Task {
 
     @ManyToMany(mappedBy = "tasks")
     private List<User> users;
+
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;

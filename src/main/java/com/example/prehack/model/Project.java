@@ -36,10 +36,9 @@ public class Project {
     @Column(name = "data_finish")
     private Timestamp dataFinish;
 
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany(mappedBy="projects")
     private List<User> users;
 
-    @OneToMany(mappedBy = "project")
-    private List<Task> Tasks;
-
+    @OneToMany(mappedBy="project")
+    private List<Task> taskList;
 }
