@@ -1,7 +1,8 @@
 package com.example.prehack.service;
 
-import com.example.prehack.model.*;
-import com.example.prehack.web.dto.*;
+import com.example.prehack.model.User;
+import com.example.prehack.web.dto.RegistrationUserDTO;
+import com.example.prehack.web.dto.UserInfoDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

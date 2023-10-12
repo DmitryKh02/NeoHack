@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet id="create-user-task-table" author="Dmitrii">
+        <sql>
+            CREATE TABLE IF NOT EXISTS public.user_task
+            (
+                user_id  bigserial NOT NULL,
+                task_id bigserial NOT NULL,
+                CONSTRAINT user_task_pkey PRIMARY KEY (user_id, task_id),
+                CONSTRAINT bsggsanjgjdjfgkjjslkfjdtewl FOREIGN KEY (user_id)
+                REFERENCES public.users (user_id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION,
+                CONSTRAINT wejibytbweugfnvspuithwehwet FOREIGN KEY (task_id)
+                REFERENCES public.tasks (task_id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION
+                );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

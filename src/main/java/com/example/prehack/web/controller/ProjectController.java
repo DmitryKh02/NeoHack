@@ -2,8 +2,6 @@ package com.example.prehack.web.controller;
 
 import com.example.prehack.model.Project;
 import com.example.prehack.service.ProjectService;
-import com.example.prehack.service.TaskService;
-import com.example.prehack.service.UserService;
 import com.example.prehack.web.dto.ProjectDTO;
 import com.example.prehack.web.dto.UserEmailsForProjectDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,14 +9,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @Slf4j

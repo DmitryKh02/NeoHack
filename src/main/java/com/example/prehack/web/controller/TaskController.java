@@ -1,10 +1,7 @@
 package com.example.prehack.web.controller;
 
-import com.example.prehack.model.Project;
 import com.example.prehack.model.Task;
-import com.example.prehack.service.ProjectService;
 import com.example.prehack.service.TaskService;
-import com.example.prehack.web.dto.ProjectDTO;
 import com.example.prehack.web.dto.TaskDTO;
 import com.example.prehack.web.dto.UserEmailsForProjectDTO;
 import io.swagger.v3.oas.annotations.Operation;
