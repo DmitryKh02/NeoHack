@@ -3,12 +3,9 @@ package com.example.prehack.service.impl;
 
 import com.example.prehack.exception.ResourceNotFoundException;
 import com.example.prehack.mapper.ProjectMapper;
-import com.example.prehack.mapper.TaskMapper;
 import com.example.prehack.model.Project;
-import com.example.prehack.model.Task;
 import com.example.prehack.model.User;
 import com.example.prehack.repository.ProjectRepository;
-import com.example.prehack.repository.TaskRepository;
 import com.example.prehack.service.ProjectService;
 import com.example.prehack.service.UserService;
 import com.example.prehack.web.dto.ProjectDTO;

@@ -1,10 +1,7 @@
 package com.example.prehack.service;
 
 import com.example.prehack.model.Project;
-import com.example.prehack.model.Task;
-import com.example.prehack.model.enumformodel.Priority;
-import com.example.prehack.model.enumformodel.Status;
-import com.example.prehack.web.dto.*;
+import com.example.prehack.web.dto.ProjectDTO;
 
 import java.util.List;
 

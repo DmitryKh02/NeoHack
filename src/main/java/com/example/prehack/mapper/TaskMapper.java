@@ -1,8 +1,6 @@
 package com.example.prehack.mapper;
 
 import com.example.prehack.model.Task;
-import com.example.prehack.model.User;
-import com.example.prehack.web.dto.RegistrationUserDTO;
 import com.example.prehack.web.dto.TaskDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

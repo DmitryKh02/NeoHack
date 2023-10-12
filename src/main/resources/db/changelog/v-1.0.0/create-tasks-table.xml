@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet id="create-tasks-table" author="Dmitrii">
+        <sql>
+            CREATE TABLE IF NOT EXISTS public.tasks
+            (
+                task_id bigserial NOT NULL,
+                data_start timestamp,
+                data_finish timestamp,
+                description varchar(255),
+                name varchar(255),
+                priority varchar(255),
+                status varchar(255),
+                project_id bigint,
+                CONSTRAINT tasks_pkey PRIMARY KEY (task_id),
+                CONSTRAINT fkd0im63f67sps1ty7956t9ahn4 FOREIGN KEY (project_id)
+                REFERENCES public.projects (project_id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION
+            );
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>

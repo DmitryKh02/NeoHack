@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -19,7 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "tasks")
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
@@ -47,6 +45,7 @@ public class Task {
 
     @ManyToMany(mappedBy="tasks")
     private List<User> users;
+
     @ManyToOne
     @JoinColumn(name="project_id", nullable=false)
     private Project project;

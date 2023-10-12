@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -43,8 +40,5 @@ public class Project {
     private List<User> users;
 
     @OneToMany(mappedBy="project")
-    private List<Task> Tasks;
-
-
-
+    private List<Task> taskList;
 }

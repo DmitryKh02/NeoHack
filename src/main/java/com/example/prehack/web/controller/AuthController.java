@@ -1,6 +1,5 @@
 package com.example.prehack.web.controller;
 
-import com.example.prehack.model.User;
 import com.example.prehack.service.UserService;
 import com.example.prehack.web.dto.AuthorizationUserDTO;
 import com.example.prehack.web.dto.JwtResponseDTO;
