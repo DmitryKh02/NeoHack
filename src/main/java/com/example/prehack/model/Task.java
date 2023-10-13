@@ -43,8 +43,8 @@ public class Task {
     @Column(name = "data_finish")
     private Timestamp dataFinish;
 
-    @ManyToMany(mappedBy = "tasks")
-    private List<User> users;
+//    @OneToOne(mappedBy = "tasks")
+//    private User users;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)

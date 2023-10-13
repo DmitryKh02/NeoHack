@@ -37,13 +37,18 @@ public class User {
     )
     private List<Project> projects;
 
-    @ManyToMany(cascade = {CascadeType.MERGE})
-    @JoinTable(
-            name = "user_task",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id")
-    )
-    private List<Task> tasks;
+//    @ManyToMany(cascade = {CascadeType.MERGE})
+//    @JoinTable(
+//            name = "user_task",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "task_id")
+//    )
+//    private List<Task> tasks;
+
+    @OneToOne
+    @JoinColumn(name = "task_id")
+    private Task taskId;
+
 
     @ManyToMany
     @JoinTable(

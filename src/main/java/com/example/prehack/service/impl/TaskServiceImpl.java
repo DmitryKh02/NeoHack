@@ -52,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
 
         User user = userService.getUserById(userId);
 
-        List<Task> tasks = taskRepository.findAllByUsersContaining(user);
+        List<Task> tasks = null;//taskRepository.findAllByUsersContaining(user);
 
         log.info("[getAllUsersTask] << result: {}", tasks);
 
@@ -133,12 +133,12 @@ public class TaskServiceImpl implements TaskService {
         Task task = getTaskById(taskId);
         User user = userService.getUserByEmail(userEmail);
 
-        List<User> users = task.getUsers();
-        if (users.isEmpty()) {
-            task.setUsers(List.of(user));
-        } else {
-            task.getUsers().add(user);
-        }
+//        List<User> users = task.getUsers();
+//        if (users.isEmpty()) {
+//            task.setUsers(List.of(user));
+//        } else {
+//            task.getUsers().add(user);
+//        }
 
         Task savedTask = taskRepository.save(task);
 
