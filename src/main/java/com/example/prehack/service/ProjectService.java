@@ -11,7 +11,7 @@ public interface ProjectService {
 
     List<Project> getAllProjectForUserByEmail(String userEmail);
 
-    Project createProject(ProjectDTO projectDTO);
+    Project createProject(String emailCreator, ProjectDTO projectDTO);
 
     void deleteProject(Long projectId);
 
@@ -19,5 +19,5 @@ public interface ProjectService {
 
     Project setNewUserForProject(Long id, String userEmail);
 
-    Project setTaskToProject(Long projectId, Long taskId);
+    List<Project> getAllProject();
 }

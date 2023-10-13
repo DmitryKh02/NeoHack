@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -36,9 +37,14 @@ public class Project {
     @Column(name = "data_finish")
     private Timestamp dataFinish;
 
-    @ManyToMany(mappedBy = "projects")
-    private List<User> users;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_project",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "project")
-    private List<Task> taskList;
+/*    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private List<Task> taskList = new LinkedList<>();*/
 }

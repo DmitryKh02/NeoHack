@@ -170,6 +170,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return users;
     }
 
+    @Override
+    public List<User> getAllUserByProject(Long projectId) {
+        log.info("[getAllUserByProject] projectId: {}", projectId);
+
+        List<User> users = userRepository.findAllUserInProject(projectId);
+
+        log.info("[getAllUserByProject] << result: {}", users.size());
+
+        return users;
+    }
+
     //TODO в будущую реализацию, пока не трогаем
     @Override
     public Boolean userEmailConfirmation(String sesCode) {

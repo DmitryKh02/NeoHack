@@ -15,15 +15,23 @@ public interface TaskService {
 
     List<Task> getAllTaskFromProject(Long projectId);
 
+    List<Task> getAllTask();
+
     Task createTask(TaskDTO taskDTO, String email);
 
-    Task updateTask(Long taskId, TaskDTO taskDTO);
+    Task setTaskToProject(Long projectId, Long taskId);
 
-    Task setNewPriority(Long taskId, Priority priority);
+    Task setFullInfoForTask(Long taskId, TaskDTO taskDTO);
+
+    Task setPriorityForTask(Long taskId, Priority priority);
 
     Task setUserForTask(Long taskId, String userEmail);
 
-    Task setNewStatus(Long taskId, Status status);
 
-    Task changeNameAboutTask(Long taskId, TaskDTO taskDTO);
+    Task setStatusForTask(String email, Long taskId, Status status);
+
+    Task setNameForTask(Long taskId, TaskDTO taskDTO);
+
+
+    void deleteTask(Long taskId);
 }

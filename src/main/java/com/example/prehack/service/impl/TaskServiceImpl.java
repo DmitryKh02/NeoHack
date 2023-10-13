@@ -8,6 +8,7 @@ import com.example.prehack.model.Task;
 import com.example.prehack.model.User;
 import com.example.prehack.model.enumformodel.Priority;
 import com.example.prehack.model.enumformodel.Status;
+import com.example.prehack.model.jsonb.StatusHistory;
 import com.example.prehack.repository.TaskRepository;
 import com.example.prehack.service.ProjectService;
 import com.example.prehack.service.RoleService;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -47,12 +49,23 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> getAllTask() {
+        log.info("[getAllTask] >> without");
+
+        List<Task> tasks = taskRepository.findAll();
+
+        log.info("[getAllTask] << result: {}", tasks);
+
+        return tasks;
+    }
+
+    @Override
     public List<Task> getAllUsersTask(Long userId) {
         log.info("[getAllUsersTask] >> userId: {}", userId);
 
         User user = userService.getUserById(userId);
 
-        List<Task> tasks = taskRepository.findAllByUsersContaining(user);
+        List<Task> tasks = taskRepository.findAllByUserContaining(user);
 
         log.info("[getAllUsersTask] << result: {}", tasks);
 
@@ -73,20 +86,38 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task setTaskToProject(Long projectId, Long taskId) {
+        log.info("[setTaskToProject] >> projectId: {}, taskId: {}", projectId, taskId);
+
+        Task task = getTaskById(taskId);
+
+        task.setProject(projectService.getProjectById(projectId));
+
+        task = taskRepository.save(task);
+
+        log.info("[setTaskToProject] << result: {}", task);
+
+        return task;
+    }
+
+    @Override
     public Task createTask(TaskDTO taskDTO, String email) {
         log.info("[createTask] >> taskDTO: {}", taskDTO);
-        //Создание и без привязки к проекту и с привязкой и от лица менеджера и от лица пользователей
+        //Без привязки к проекту и к пользователю
+        //Название только если пользователь - менеджер
+
         User user = userService.getUserByEmail(email);
-        Role role = roleService.getRoleByName("MANAGER");
+        Role roleManager = roleService.getRoleByName("ROLE_MANAGER");
 
         Task task = taskMapper.taskDTOToTask(taskDTO);
 
-        if (taskDTO.getProjectId() == null) {
-            task.setProject(projectService.getProjectById(taskDTO.getProjectId()));
-        }
+        StatusHistory statusHistory = new StatusHistory(user, Status.OPENED, LocalDateTime.now());
+        task.setStatusHistories(List.of(statusHistory));
 
-        if (!user.getRoles().contains(role)) {
+        if (!user.getRoles().contains(roleManager)) {
             task.setName("");
+        } else {
+            task.setProject(projectService.getProjectById(taskDTO.getProjectId()));
         }
 
         Task savedTask = taskRepository.save(task);
@@ -96,25 +127,28 @@ public class TaskServiceImpl implements TaskService {
         return savedTask;
     }
 
+
     @Override
-    public Task updateTask(Long taskId, TaskDTO taskDTO) {
+    public Task setFullInfoForTask(Long taskId, TaskDTO taskDTO) {
         log.info("[updateTask] >> taskDTO: {}", taskDTO);
 
         Task taskForUpdate = getTaskById(taskId);
 
-        Task task = taskMapper.taskDTOToTask(taskDTO);
-        task.setTaskId(taskForUpdate.getTaskId());
-        task.setProject(taskForUpdate.getProject());
+        Task newTask = taskMapper.taskDTOToTask(taskDTO);
 
-        Task savedTask = taskRepository.save(task);
+        newTask.setTaskId(taskForUpdate.getTaskId());
+        newTask.setStatusHistories(taskForUpdate.getStatusHistories());
+        newTask.setProject(taskForUpdate.getProject());
+
+        Task savedTask = taskRepository.save(newTask);
 
         log.info("[updateTask] << result is token for user");
 
-        return savedTask;
+        return null;
     }
 
     @Override
-    public Task setNewPriority(Long taskId, Priority priority) {
+    public Task setPriorityForTask(Long taskId, Priority priority) {
         log.info("[setNewPriority] >> taskId: {}, priority: {}", taskId, priority);
         Task task = getTaskById(taskId);
 
@@ -131,14 +165,15 @@ public class TaskServiceImpl implements TaskService {
     public Task setUserForTask(Long taskId, String userEmail) {
         log.info("[setUserForTask] >> taskId: {}, userEmail: {}", taskId, userEmail);
         Task task = getTaskById(taskId);
-        User user = userService.getUserByEmail(userEmail);
 
-        List<User> users = task.getUsers();
+        task.setUser(userService.getUserByEmail(userEmail));
+
+/*        List<User> users = task.getUsers();
         if (users.isEmpty()) {
             task.setUsers(List.of(user));
         } else {
             task.getUsers().add(user);
-        }
+        }*/
 
         Task savedTask = taskRepository.save(task);
 
@@ -148,11 +183,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task setNewStatus(Long taskId, Status status) {
+    public Task setStatusForTask(String email, Long taskId, Status status) {
         log.info("[setNewStatus] >> taskId: {}, status: {}", taskId, status);
-        Task task = getTaskById(taskId);
 
-        task.setStatus(status);
+        Task task = getTaskById(taskId);
+        User user = userService.getUserByEmail(email);
+
+        StatusHistory statusHistory = new StatusHistory(user, status, LocalDateTime.now());
+
+        task.getStatusHistories().add(statusHistory);
 
         Task savedTask = taskRepository.save(task);
 
@@ -162,7 +201,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task changeNameAboutTask(Long taskId, TaskDTO taskDTO) {
+    public Task setNameForTask(Long taskId, TaskDTO taskDTO) {
         log.info("[changeNameAboutTask] >> taskId: {}, taskDTO: {}", taskId, taskDTO);
         Task task = getTaskById(taskId);
 
@@ -175,4 +214,12 @@ public class TaskServiceImpl implements TaskService {
         return savedTask;
     }
 
+    @Override
+    public void deleteTask(Long taskId) {
+        log.info("[deleteTask] >> taskId: {}", taskId);
+
+        taskRepository.delete(getTaskById(taskId));
+
+        log.info("[deleteTask] << result task was deleted");
+    }
 }
