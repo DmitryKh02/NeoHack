@@ -3,6 +3,9 @@ package com.example.prehack.service.impl;
 import com.example.prehack.mapper.TaskMapper;
 import com.example.prehack.model.Project;
 import com.example.prehack.model.Task;
+import com.example.prehack.model.User;
+import com.example.prehack.model.enumformodel.Priority;
+import com.example.prehack.model.enumformodel.Status;
 import com.example.prehack.repository.TaskRepository;
 import com.example.prehack.service.ProjectService;
 import com.example.prehack.service.UserService;
@@ -13,11 +16,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -77,26 +83,99 @@ class TaskServiceImplTest {
         assertEquals(savedTask, task);
     }
 
-    // как тестировать этот и следующие методы, если они вызывают getTaskById?
-
-//    @Test
-//    void updateTask() {
-//        Long taskId = random(Long.class);
-//        Task taskForUpdate = Task.builder().build();
-//        TaskDTO taskDTO = TaskDTO.builder().build();
-//
-//        when()
-//    }
-
     @Test
-    void setNewPriority() {
+    void updateTask() {
+        Long taskId = random(Long.class);
+        Task taskForUpdate = Task.builder().build();
+        TaskDTO taskDTO = TaskDTO.builder().build();
+
+        when(taskMapper.taskDTOToTask(taskDTO)).thenReturn(taskForUpdate);
+        when(taskRepository.save(any())).thenReturn(taskForUpdate);
+        when(taskRepository.findById(any())).thenReturn(Optional.of(taskForUpdate));
+
+        Task updatedTask = taskService.updateTask(taskId, taskDTO);
+        assertEquals(taskForUpdate, updatedTask);
     }
 
     @Test
-    void setUserForTask() {
+    void setNewPriority() {
+        Long taskId = random(Long.class);
+        Priority priority = random(Priority.class);
+        Task taskToSetPriority = Task.builder().build();
+        Task taskWithPriority = Task.builder()
+                .priority(priority)
+                .build();
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.ofNullable(taskToSetPriority));
+        when(taskRepository.save(any(Task.class))).thenReturn(taskWithPriority);
+
+        taskService.setNewPriority(taskId, priority);
+        assertEquals(priority, taskWithPriority.getPriority());
+
+    }
+
+    @Test
+    void setUserForTask_whenTaskHasNoUsers() {
+        Long taskId = random(Long.class);
+        String userEmail = random(String.class);
+        Task taskToSetUser = Task.builder()
+                .users(new ArrayList<>())
+                .build();
+        User user = User.builder()
+                .userName(userEmail)
+                .build();
+        Task taskWithUser = Task.builder()
+                .users(List.of(user))
+                .build();
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.ofNullable(taskToSetUser));
+        when(userService.getUserByEmail(userEmail)).thenReturn(user);
+        when(taskRepository.save(any(Task.class))).thenReturn(taskWithUser);
+
+        taskService.setUserForTask(taskId, userEmail);
+        assertTrue(taskWithUser.getUsers().contains(user));
+    }
+
+    @Test
+    void setUserForTask_whenTaskHasUsers() {
+        User alreadyAddedUser = User.builder()
+                .userName(random(String.class))
+                .build();
+        List<User> users = new ArrayList<>();
+        users.add(alreadyAddedUser);
+        Long taskId = random(Long.class);
+        String userEmail = random(String.class);
+        Task taskToSetUser = Task.builder()
+                .users(users)
+                .build();
+        User userToAdd = User.builder()
+                .userName(userEmail)
+                .build();
+        users.add(userToAdd);
+        Task taskWithUser = Task.builder()
+                .users(users)
+                .build();
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.ofNullable(taskToSetUser));
+        when(userService.getUserByEmail(userEmail)).thenReturn(userToAdd);
+        when(taskRepository.save(any(Task.class))).thenReturn(taskWithUser);
+
+        taskService.setUserForTask(taskId, userEmail);
+        assertTrue(taskWithUser.getUsers().contains(userToAdd));
     }
 
     @Test
     void setNewStatus() {
+        Long taskId = random(Long.class);
+        Status status = random(Status.class);
+        Task updatedTask = Task.builder()
+                .status(status)
+                .build();
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.ofNullable(updatedTask));
+        when(taskRepository.save(updatedTask)).thenReturn(updatedTask);
+
+        taskService.setNewStatus(taskId, status);
+        assertEquals(status, updatedTask.getStatus());
     }
 }

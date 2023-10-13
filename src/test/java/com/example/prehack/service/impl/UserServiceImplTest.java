@@ -8,11 +8,13 @@ import com.example.prehack.repository.UserRepository;
 import com.example.prehack.service.RoleService;
 import com.example.prehack.utils.JwtTokenUtils;
 import com.example.prehack.web.dto.RegistrationUserDTO;
+import com.example.prehack.web.dto.UserInfoDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -22,6 +24,9 @@ import java.util.Optional;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -113,24 +118,52 @@ class UserServiceImplTest {
         assertThrows(UserAlreadyExistException.class, () -> userService.createUser(dto));
     }
 
-    @Test
+    @Test //TODO я хз как это сделать работающим
     void setUserToSecurityAndCreateToken() {
-        //TODO untestable
+        String email = random(String.class);
+//        UserDetails userDetails = random( org.springframework.security.core.userdetails.User.class);
+
+        userService.setUserToSecurityAndCreateToken(email);
+
+        verify(jwtTokenUtils, times(1)).generateToken(any());
     }
 
     @Test
     void fullUpdateUser() {
-        //TODO untestable
+        String name = random(String.class);
+        UserInfoDTO requestDTO = random(UserInfoDTO.class);
+        User user = User.builder().build();
+        User userWithNewInfo = User.builder()
+                .email(requestDTO.getEmail())
+                .password(requestDTO.getPassword())
+                .userName(requestDTO.getUserName())
+                .build();
+
+        when(userRepository.findByUserName(name)).thenReturn(Optional.ofNullable(user));
+        when(userMapper.UserInfoDTOToUserFull(requestDTO)).thenReturn(userWithNewInfo);
+        when(userRepository.save(userWithNewInfo)).thenReturn(userWithNewInfo);
+
+        userService.fullUpdateUser(name, requestDTO);
+        assertEquals(requestDTO.getEmail(), userWithNewInfo.getEmail());
+        assertEquals(requestDTO.getPassword(), userWithNewInfo.getPassword());
+        assertEquals(requestDTO.getUserName(), userWithNewInfo.getUserName());
     }
 
     @Test
     void updateSomeUserInfo() {
-        //TODO untestable
+        //TODO метод идентичен fullUpdateUser
     }
 
     @Test
     void deleteUser() {
-        //TODO untestable
+        String userName = random(String.class);
+        User user = User.builder().build();
+
+        when(userRepository.findByUserName(userName)).thenReturn(Optional.ofNullable(user));
+        doNothing().when(userRepository).delete(user);
+
+        userService.deleteUser(userName);
+        verify(userRepository, times(1)).delete(user);
     }
 
     @Test
@@ -156,6 +189,6 @@ class UserServiceImplTest {
 
     @Test
     void loadUserByUsername() {
-        //TODO untestable
+        //TODO пока не понял как тестировать
     }
 }
