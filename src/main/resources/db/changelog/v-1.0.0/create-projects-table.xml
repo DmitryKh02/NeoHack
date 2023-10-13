@@ -15,7 +15,6 @@
                 name varchar(255),
                 CONSTRAINT projects_pkey PRIMARY KEY (project_id)
             );
-
         </sql>
     </changeSet>
 </databaseChangeLog>
