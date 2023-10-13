@@ -33,19 +33,19 @@ public class JwtTokenUtils {
 
     public String generateToken(UserDetails userDetails) {
         log.info("[generateToken] >> some userDetails");
-        Map<String, Object> clains = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        clains.put("roles", rolesList);
+        claims.put("roles", rolesList);
 
         Date issuedDate = new Date();
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime.toMillis());
 
         log.info("[generateToken] << result is Jws");
         return Jwts.builder()
-                .claims(clains)
+                .claims(claims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
                 .expiration(expiredDate)
