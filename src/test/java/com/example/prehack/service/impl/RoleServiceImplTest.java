@@ -41,6 +41,7 @@ class RoleServiceImplTest {
 
         when(roleRepository.findByName(name)).thenReturn(Optional.of(role));
 
+        roleService.getRoleByName(name);
         assertEquals(role, roleService.getRoleByName(name));
     }
 
@@ -48,7 +49,7 @@ class RoleServiceImplTest {
     void getRoleByName_withNotExistingName() {
         String name = "DESTROYER";
 
-        when(roleRepository.findByName(name)).thenThrow(ResourceNotFoundException.class);
+        when(roleRepository.findByName(name)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> roleService.getRoleByName(name));
     }
@@ -62,6 +63,7 @@ class RoleServiceImplTest {
 
         when(roleRepository.findAll()).thenReturn(roles);
 
+        roleService.getAllRole();
         List<Role> allRoles = roleRepository.findAll();
         assertTrue(allRoles.contains(role1));
         assertTrue(allRoles.contains(role2));
@@ -70,10 +72,14 @@ class RoleServiceImplTest {
 
     @Test
     void createRole() {
-        Role role1 = new Role(1L, "ROLE_USER");
+        String name = "ROLE_USER";
+        Role role1 = Role.builder()
+                .name(name)
+                .build();
 
         when(roleRepository.save(role1)).thenReturn(role1);
 
-        assertEquals("ROLE_USER", roleRepository.save(role1).getName());
+        roleService.createRole(name);
+        assertEquals(name, roleRepository.save(role1).getName());
     }
 }
