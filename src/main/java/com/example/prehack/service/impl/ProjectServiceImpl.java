@@ -2,6 +2,7 @@ package com.example.prehack.service.impl;
 
 
 import com.example.prehack.exception.ResourceNotFoundException;
+import com.example.prehack.exception.UserAlreadyExistException;
 import com.example.prehack.mapper.ProjectMapper;
 import com.example.prehack.model.Project;
 import com.example.prehack.model.User;
@@ -112,13 +113,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project setNewUserForProject(Long id, String userEmail) {
+    public Project setNewUserForProject(Long id, String userEmail) throws UserAlreadyExistException {
         log.info("[setNewUserForProject] >> id: {}, userEmail: {}", id, userEmail);
 
         Project project = getProjectById(id);
-
-        //TODO проверка на добавление одинаковых пользоватлей на проект
         User user = userService.getUserByEmail(userEmail);
+
+        if(project.getUsers().contains(user)){
+            throw new UserAlreadyExistException("User with id " + user.getUserId() +" already exists in this project");
+        }
 
         project.getUsers().add(user);
 

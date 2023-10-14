@@ -4,8 +4,12 @@ jwt:
 spring:
   datasource:
     url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGNAME:postgres}
-    password: ${PGPASSWORD:1234}
+    #url: jdbc:postgresql://rc1b-m17jig7pms2njiie.mdb.yandexcloud.net:6432?sslmode=verify-full&$dbname=cnrprod-team-58500&user=cnrprod-team-58500&target_session_attrs=read-write
+    #&ssl=true
+    password: ${PGPASSWORD:d03UNgxXHkCt}
+    #password: ${PGPASSWORD:d03UNgxXHkCt}
     username: postgres
+    #username: cnrprod-team-58500
   jpa:
     hibernate:
       ddl-auto: validate
