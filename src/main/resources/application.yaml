@@ -4,7 +4,7 @@ jwt:
 spring:
   datasource:
     url: jdbc:postgresql://${POSTGRES_LINK:localhost:5432}/postgres
-    password: ${DATABASE_PASSWORD:postgres}
+    password: ${DATABASE_PASSWORD:1234}
     username: postgres
   jpa:
     hibernate:
