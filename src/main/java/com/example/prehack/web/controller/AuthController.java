@@ -41,7 +41,7 @@ public class AuthController {
             throw badCredentialsException;
         }
 
-        String token = userService.setUserToSecurityAndCreateToken(authorizationUserDTO.getEmail());
+        String token = userService.createTokenForUser(authorizationUserDTO.getEmail());
 
         log.info("[createToken] << result is token");
         return ResponseEntity.ok().body(new JwtResponseDTO(token));
