@@ -87,6 +87,4 @@ public interface UserService {
      * @return all user
      */
     List<User> getAllUser();
-
-
 }

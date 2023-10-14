@@ -50,18 +50,6 @@ public class Task {
     @Column(name = "status_history", columnDefinition = "json")
     private List<StatusHistory> statusHistories;
 
-/*  @ManyToMany(cascade = {CascadeType.MERGE})
-    @JoinTable(
-            name = "user_task",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> User = new LinkedList<>();*/
-
-    /*
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;*/
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id", referencedColumnName = "user_id")
