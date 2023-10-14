@@ -17,11 +17,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class AuthorizationUserDTO {
 
-    @NotNull
-    @Email
+    //@NotNull
+    //@Email
     private String email;
 
-    @NotNull
-    @Length(min = 2, max = 50, message = "firstName length must be from 2 to 30")
+    //@NotNull
+    //@Length(min = 2, max = 50, message = "firstName length must be from 2 to 30")
     private String password;
 }
