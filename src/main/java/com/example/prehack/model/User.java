@@ -29,27 +29,6 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(cascade = {CascadeType.MERGE})
-    @JoinTable(
-            name = "user_project",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private List<Project> projects;
-
-//    @ManyToMany(cascade = {CascadeType.MERGE})
-//    @JoinTable(
-//            name = "user_task",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "task_id")
-//    )
-//    private List<Task> tasks;
-
-    @OneToOne
-    @JoinColumn(name = "task_id")
-    private Task taskId;
-
-
     @ManyToMany
     @JoinTable(
             name = "user_role",
@@ -57,4 +36,5 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+
 }

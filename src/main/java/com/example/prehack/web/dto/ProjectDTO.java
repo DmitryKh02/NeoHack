@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -20,9 +20,9 @@ public class ProjectDTO {
 
     private String customer;
 
-    private LocalDateTime dataStart;
+    private LocalDate dataStart;
 
-    private LocalDateTime dataFinish;
+    private LocalDate dataFinish;
 
     private Set<UserEmailsForProjectDTO> userEmails;
 }
