@@ -34,6 +34,8 @@ public interface UserService {
      * @return jws token for user
      */
     String createUser(RegistrationUserDTO registrationUserDTO);
+    void createManager(RegistrationUserDTO registrationUserDTO);
+    void createTester(RegistrationUserDTO registrationUserDTO);
 
     @Transactional
     String setUserToSecurityAndCreateToken(String name);

@@ -127,6 +127,30 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return setUserToSecurityAndCreateToken(savedUser.getEmail());
     }
 
+    @Override
+    public void createManager(RegistrationUserDTO registrationUserDTO) {
+        Role role = roleService.getRoleByName("ROLE_MANAGER");
+
+        User user = userMapper.registrationUserDTOToUser(registrationUserDTO);
+        user.setPassword(passwordEncoder.encode(registrationUserDTO.getPassword()));
+        user.setRoles(List.of(role));
+        userRepository.save(user);
+
+        log.info("[createUser] << result is token for user");
+    }
+
+    @Override
+    public void createTester(RegistrationUserDTO registrationUserDTO) {
+        Role role = roleService.getRoleByName("ROLE_TESTER");
+
+        User user = userMapper.registrationUserDTOToUser(registrationUserDTO);
+        user.setPassword(passwordEncoder.encode(registrationUserDTO.getPassword()));
+        user.setRoles(List.of(role));
+        userRepository.save(user);
+
+        log.info("[createUser] << result is token for user");
+    }
+
     @Transactional
     @Override
     public String setUserToSecurityAndCreateToken(String email) {
