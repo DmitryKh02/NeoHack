@@ -38,8 +38,6 @@ public interface UserService {
     @Transactional
     String setUserToSecurityAndCreateToken(String name);
 
-    List<User> getAllUserByProject(Long projectId);
-
     /**
      * NOT IMPLEMENTED | Check sesCode to correct
      *
@@ -59,11 +57,11 @@ public interface UserService {
     /**
      * Update information about user
      *
-     * @param name       - user name for update
+     * @param email      - user email for update
      * @param requestDTO - missing information about client
      * @return updated client
      */
-    User fullUpdateUser(String name, UserInfoDTO requestDTO);
+    User fullUpdateUser(String email, UserInfoDTO requestDTO);
 
     /**
      * Update some information about user
@@ -77,9 +75,9 @@ public interface UserService {
     /**
      * Delete user from database
      *
-     * @param userName for deleting
+     * @param email for deleting
      */
-    void deleteUser(String userName);
+    void deleteUser(String email);
 
     /**
      * Method for Admin | Select all user from database

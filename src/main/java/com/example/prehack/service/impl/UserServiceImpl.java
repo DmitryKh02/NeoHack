@@ -3,9 +3,11 @@ package com.example.prehack.service.impl;
 import com.example.prehack.exception.ResourceNotFoundException;
 import com.example.prehack.exception.UserAlreadyExistException;
 import com.example.prehack.mapper.UserMapper;
+import com.example.prehack.model.Role;
 import com.example.prehack.model.User;
 import com.example.prehack.repository.UserRepository;
 import com.example.prehack.service.RoleService;
+import com.example.prehack.service.SendMailService;
 import com.example.prehack.service.UserService;
 import com.example.prehack.utils.JwtTokenUtils;
 import com.example.prehack.web.dto.RegistrationUserDTO;
@@ -37,6 +39,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final RoleService roleService;
 
     private final UserMapper userMapper;
+
+    private final SendMailService sendMailService;
 
     @Override
     public User getUserByEmail(String email) {
@@ -95,15 +99,32 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
 
         //TODO выбор роли при регистрации
+        Role role = roleService.getRoleByName("ROLE_USER");
+
         User user = userMapper.registrationUserDTOToUser(registrationUserDTO);
         user.setPassword(passwordEncoder.encode(registrationUserDTO.getPassword()));
-        user.setRoles(List.of(roleService.getRoleByName("ROLE_USER")));
-
+        user.setRoles(List.of(role));
         User savedUser = userRepository.save(user);
 
         log.info("[createUser] << result is token for user");
 
-        return setUserToSecurityAndCreateToken(savedUser.getUserName());
+        //TODO вынести в ресурсы все строки
+        sendMailService.sendEmail(registrationUserDTO.getEmail(), "Подтверждение пароля", "Вы попали в мир эпических и крутых паролей! Чтобы подтвердить ваш пароль, пожалуйста, внимательно прочитайте следующий текст:\n" +
+                "\n" +
+                "\"Тебе удалось достичь верхушки невозможного, так что продолжай в том же духе! Твой пароль - это произведение искусства, похожее на небесную симфонию. Он сияет ярче самых кошачьих глаз и могучее, как гром на горизонте.\n" +
+                "\n" +
+                "Ты чувствуешь, как твоя смелость и самопознание пронизывают каждую букву твоего пароля? Он словно зеркало, отражающее твою непоколебимую волю и решимость. Когда ты вводишь этот пароль, ты становишься настоящим героем, готовым сразиться с любыми вызовами.\n" +
+                "\n" +
+                "Держи свой пароль в безопасности, как дракон охраняет свое сокровище. Этот пароль - главная стража твоих данных и врат, которые открываются только перед избранными. Не делись своим паролем никогда и ни с кем! Ведь только ты способен порождать такое чудо.\n" +
+                "\n" +
+                "Теперь, когда ты избран, докажи миру, что ты обладаешь уникальной мощью и непревзойденным мастерством. Иди вперед, с головой высоко задрав, а твой пароль станет твоим верным союзником в путешествии по киберпространству.\n" +
+                "\n" +
+                "Новый герой, твой пароль официально подтвержден! Вперед, на подвиги!\"\n" +
+                "\n" +
+                "Теперь, несите свой эпический и крутой пароль с гордостью и уверенностью. Будьте готовы к потрясающим приключениям и пусть ничто не остановит вас!");
+
+
+        return setUserToSecurityAndCreateToken(savedUser.getEmail());
     }
 
     @Transactional
@@ -119,10 +140,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User fullUpdateUser(String name, UserInfoDTO requestDTO) {
-        log.info("[fullUpdateUser] >> name: {}, requestDTO: {}", name, requestDTO);
+    public User fullUpdateUser(String email, UserInfoDTO requestDTO) {
+        log.info("[fullUpdateUser] >> email: {}, requestDTO: {}", email, requestDTO);
 
-        User user = getUserByName(name);
+        User user = getUserByEmail(email);
 
         User userWithNewInfo = userMapper.UserInfoDTOToUserFull(requestDTO);
         userWithNewInfo.setUserId(user.getUserId());
@@ -151,10 +172,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void deleteUser(String userName) {
-        log.info("[deleteUser] >> name: {}", userName);
+    public void deleteUser(String email) {
+        log.info("[deleteUser] >> email: {}", email);
 
-        userRepository.delete(getUserByName(userName));
+        userRepository.delete(getUserByEmail(email));
 
         log.info("[deleteUser] << result: user has been deleted");
     }
@@ -170,16 +191,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return users;
     }
 
-    @Override
-    public List<User> getAllUserByProject(Long projectId) {
-        log.info("[getAllUserByProject] projectId: {}", projectId);
-
-        List<User> users = userRepository.findAllUserInProject(projectId);
-
-        log.info("[getAllUserByProject] << result: {}", users.size());
-
-        return users;
-    }
 
     //TODO в будущую реализацию, пока не трогаем
     @Override

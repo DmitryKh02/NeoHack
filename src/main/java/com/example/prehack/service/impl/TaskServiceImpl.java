@@ -2,7 +2,6 @@ package com.example.prehack.service.impl;
 
 import com.example.prehack.exception.ResourceNotFoundException;
 import com.example.prehack.mapper.TaskMapper;
-import com.example.prehack.model.Project;
 import com.example.prehack.model.Role;
 import com.example.prehack.model.Task;
 import com.example.prehack.model.User;
@@ -18,6 +17,7 @@ import com.example.prehack.web.dto.TaskDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,6 +49,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task getTaskByIdWithoutProject(Long id) {
+        log.info("[getTaskById] >> id: {}", id);
+
+        Task task = taskRepository.findTaskWithoutProject(id)
+                .orElseThrow(() -> {
+                    log.error("Task not found by this id :{} ", id);
+                    return new ResourceNotFoundException("Task not found by this id :: " + id);
+                });
+
+        log.info("[getTaskById] << result: {}", task);
+
+        return task;
+    }
+
+    @Override
     public List<Task> getAllTask() {
         log.info("[getAllTask] >> without");
 
@@ -60,12 +75,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAllUsersTask(Long userId) {
-        log.info("[getAllUsersTask] >> userId: {}", userId);
+    public List<Task> getAllTaskForUserByEmail(String email) {
+        log.info("[getAllUsersTask] >> email: {}", email);
 
-        User user = userService.getUserById(userId);
-
-        List<Task> tasks = null;//taskRepository.findAllByUsersContaining(user);
+        List<Task> tasks = taskRepository.findAllByUser(userService.getUserByEmail(email));
 
         log.info("[getAllUsersTask] << result: {}", tasks);
 
@@ -76,9 +89,7 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getAllTaskFromProject(Long projectId) {
         log.info("[getAllTaskFromProject] >> projectId: {}", projectId);
 
-        Project project = projectService.getProjectById(projectId);
-
-        List<Task> tasks = taskRepository.findAllByProject(project);
+        List<Task> tasks = taskRepository.findAllByProject(projectService.getProjectById(projectId));
 
         log.info("[getAllTaskFromProject] << result: {}", tasks);
 
@@ -89,7 +100,7 @@ public class TaskServiceImpl implements TaskService {
     public Task setTaskToProject(Long projectId, Long taskId) {
         log.info("[setTaskToProject] >> projectId: {}, taskId: {}", projectId, taskId);
 
-        Task task = getTaskById(taskId);
+        Task task = getTaskByIdWithoutProject(taskId);
 
         task.setProject(projectService.getProjectById(projectId));
 
@@ -101,6 +112,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public Task createTask(TaskDTO taskDTO, String email) {
         log.info("[createTask] >> taskDTO: {}", taskDTO);
         //Без привязки к проекту и к пользователю
@@ -117,7 +129,9 @@ public class TaskServiceImpl implements TaskService {
         if (!user.getRoles().contains(roleManager)) {
             task.setName("");
         } else {
-            task.setProject(projectService.getProjectById(taskDTO.getProjectId()));
+            if (taskDTO.getProjectId() != null) {
+                task.setProject(projectService.getProjectById(taskDTO.getProjectId()));
+            }
         }
 
         Task savedTask = taskRepository.save(task);
@@ -130,10 +144,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task setFullInfoForTask(Long taskId, TaskDTO taskDTO) {
-        log.info("[updateTask] >> taskDTO: {}", taskDTO);
+        log.info("[setFullInfoForTask] >> taskDTO: {}", taskDTO);
 
-        Task taskForUpdate = getTaskById(taskId);
-
+        Task taskForUpdate = getTaskByIdWithoutProject(taskId);
         Task newTask = taskMapper.taskDTOToTask(taskDTO);
 
         newTask.setTaskId(taskForUpdate.getTaskId());
@@ -142,15 +155,15 @@ public class TaskServiceImpl implements TaskService {
 
         Task savedTask = taskRepository.save(newTask);
 
-        log.info("[updateTask] << result is token for user");
+        log.info("[setFullInfoForTask] << result : {}", savedTask);
 
-        return null;
+        return savedTask;
     }
 
     @Override
     public Task setPriorityForTask(Long taskId, Priority priority) {
         log.info("[setNewPriority] >> taskId: {}, priority: {}", taskId, priority);
-        Task task = getTaskById(taskId);
+        Task task = getTaskByIdWithoutProject(taskId);
 
         task.setPriority(priority);
 
@@ -164,7 +177,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task setUserForTask(Long taskId, String userEmail) {
         log.info("[setUserForTask] >> taskId: {}, userEmail: {}", taskId, userEmail);
-        Task task = getTaskById(taskId);
+        Task task = getTaskByIdWithoutProject(taskId);
 
 
         task.setUser(userService.getUserByEmail(userEmail));
@@ -187,7 +200,7 @@ public class TaskServiceImpl implements TaskService {
     public Task setStatusForTask(String email, Long taskId, Status status) {
         log.info("[setNewStatus] >> taskId: {}, status: {}", taskId, status);
 
-        Task task = getTaskById(taskId);
+        Task task = getTaskByIdWithoutProject(taskId);
         User user = userService.getUserByEmail(email);
 
         StatusHistory statusHistory = new StatusHistory(user, status, LocalDateTime.now());
@@ -204,7 +217,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task setNameForTask(Long taskId, TaskDTO taskDTO) {
         log.info("[changeNameAboutTask] >> taskId: {}, taskDTO: {}", taskId, taskDTO);
-        Task task = getTaskById(taskId);
+        Task task = getTaskByIdWithoutProject(taskId);
 
         task.setName(taskDTO.getName());
 
@@ -219,7 +232,7 @@ public class TaskServiceImpl implements TaskService {
     public void deleteTask(Long taskId) {
         log.info("[deleteTask] >> taskId: {}", taskId);
 
-        taskRepository.delete(getTaskById(taskId));
+        taskRepository.delete(getTaskByIdWithoutProject(taskId));
 
         log.info("[deleteTask] << result task was deleted");
     }

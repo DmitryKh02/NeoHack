@@ -1,20 +1,20 @@
 package com.example.prehack.web.controller;
 
-import com.example.prehack.model.Task;
-import com.example.prehack.model.enumformodel.Priority;
-import com.example.prehack.model.enumformodel.Status;
-import com.example.prehack.service.TaskService;
-import com.example.prehack.web.dto.TaskDTO;
+import com.example.prehack.model.User;
+import com.example.prehack.service.UserService;
+import com.example.prehack.web.dto.UserInfoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -22,56 +22,91 @@ import java.security.Principal;
 @RequestMapping("/users")
 public class UserController {
 
-    private final TaskService taskService;
+    private final UserService userService;
 
-    @Operation(summary = "createTask")
+    //region Get methods
+    @Operation(summary = "Get User by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
-    @PostMapping("/task")
-    public ResponseEntity<?> createTask(Principal principal,
-                                        @Valid @RequestBody TaskDTO taskDTO) {
-        log.info("[createTask] >> taskDTO: {}", taskDTO);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable(value = "id") Long id) {
+        log.info("[getUser] >> getAllCompany");
 
-        //В principal хранится почта пользователя(данные из JWT) principal.getName();
-        Task task = taskService.createTask(taskDTO, principal.getName());
+        User user = userService.getUserById(id);
 
-        log.info("[createTask] << result: {}", task);
+        log.info("[getUser] << result: {}", user);
 
-        return ResponseEntity.ok().body(task);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE).body(user);
     }
 
-    @Operation(summary = "updateStatusForTask")
+    @Operation(summary = "Get info about this user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
-    @PatchMapping("/{taskId}/status")
-    public ResponseEntity<?> updateStatusForTask(Principal principal,
-                                                 @PathVariable(value = "taskId") Long taskId,
-                                                 @RequestParam(value = "status") Status status) {
-        log.info("[updateStatusForTask] >> taskId: {}, status: {}", taskId, status);
+    @GetMapping("/user")
+    public ResponseEntity<?> getInfoAboutThisUser(Principal principal) {
+        log.info("[getInfoAboutThisUser] >> principal: {}", principal.getName());
 
-        Task task = taskService.setStatusForTask(principal.getName(), taskId, status);
+        User user = userService.getUserByEmail(principal.getName());
 
-        log.info("[updateStatusForTask] << result: {}", task);
+        log.info("[getInfoAboutThisUser] << result: {}", user);
 
-        return ResponseEntity.ok().body(task);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE).body(user);
     }
 
-    @Operation(summary = "updatePriorityForTask")
+    @Operation(summary = "Get all User")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
-    @PatchMapping("/{taskId}/priority")
-    public ResponseEntity<?> updatePriorityForTask(@PathVariable(value = "taskId") Long taskId,
-                                                   @RequestParam(value = "priority") Priority priority) {
-        log.info("[updatePriorityForTask] >> taskId: {}, priority: {}", taskId, priority);
+    @GetMapping
+    public ResponseEntity<?> getAllUser() {
+        log.info("[getAllUser] >> getAllCompany");
 
-        Task task = taskService.setPriorityForTask(taskId, priority);
+        List<User> users = userService.getAllUser();
 
-        log.info("[updatePriorityForTask] << result: {}", task);
+        log.info("[getAllUser] << result: {}", users.size());
 
-        return ResponseEntity.ok().body(task);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE).body(users);
     }
+    //endregion
 
+    //region Patch methods
+
+    //endregion
+
+    //region Put methods
+    @Operation(summary = "changeAllUserInformation")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")})
+    @PutMapping
+    public ResponseEntity<?> changeAllUserInformation(Principal principal,
+                                                      @Valid @RequestBody UserInfoDTO userInfoDTO) {
+        log.info("[changeAllUserInformation] >> userInfoDTO:{}", userInfoDTO);
+
+        User user = userService.fullUpdateUser(principal.getName(), userInfoDTO);
+
+        log.info("[changeAllUserInformation] << result: {}", user);
+
+        return ResponseEntity.ok().body(user);
+    }
+    //endregion
+
+    //region Delete methods
+    @Operation(summary = "delete User")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")})
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(Principal principal) {
+        log.info("[deleteUser] >> email: {}", principal.getName());
+
+        userService.deleteUser(principal.getName());
+
+        log.info("[deleteUser] << result: User has been deleted");
+
+        return ResponseEntity.ok().body(true);
+    }
+    //endregion
 }

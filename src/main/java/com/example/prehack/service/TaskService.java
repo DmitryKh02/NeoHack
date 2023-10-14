@@ -11,9 +11,11 @@ public interface TaskService {
     //TODO документацию написать
     Task getTaskById(Long id);
 
-    List<Task> getAllUsersTask(Long userId);
+    List<Task> getAllTaskForUserByEmail(String email);
 
     List<Task> getAllTaskFromProject(Long projectId);
+
+    Task getTaskByIdWithoutProject(Long id);
 
     List<Task> getAllTask();
 
@@ -27,11 +29,9 @@ public interface TaskService {
 
     Task setUserForTask(Long taskId, String userEmail);
 
-
     Task setStatusForTask(String email, Long taskId, Status status);
 
     Task setNameForTask(Long taskId, TaskDTO taskDTO);
-
 
     void deleteTask(Long taskId);
 }

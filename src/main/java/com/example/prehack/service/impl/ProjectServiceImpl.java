@@ -78,15 +78,16 @@ public class ProjectServiceImpl implements ProjectService {
 
         project = projectRepository.save(project);
 
-        project.setUsers(Set.of(userService.getUserByEmail(emailCreator)));
+        Set<User> users = new HashSet<>();
+        users.add(userService.getUserByEmail(emailCreator));
 
         if (!projectDTO.getUserEmails().isEmpty()) {
-            Set<User> users = new HashSet<>();
             for (UserEmailsForProjectDTO email : projectDTO.getUserEmails()) {
                 users.add(userService.getUserByEmail(email.getEmail()));
             }
-            project.getUsers().addAll(users);
         }
+
+        project.setUsers(users);
 
         Project savedProject = projectRepository.save(project);
 
@@ -106,6 +107,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProject(Long projectId, ProjectDTO projectDTO) {
+        //TODO Реализовать
         return null;
     }
 

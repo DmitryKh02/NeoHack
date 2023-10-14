@@ -21,6 +21,7 @@ public class AuthController {
 
     private final UserService userService;
 
+
     private final AuthenticationManager authenticationManager;
 
     //TODO веб документация
