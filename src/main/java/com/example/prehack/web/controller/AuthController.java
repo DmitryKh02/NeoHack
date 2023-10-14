@@ -4,6 +4,9 @@ import com.example.prehack.service.UserService;
 import com.example.prehack.web.dto.AuthorizationUserDTO;
 import com.example.prehack.web.dto.JwtResponseDTO;
 import com.example.prehack.web.dto.RegistrationUserDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +26,10 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
-    //TODO веб документация
+    @Operation(summary = "enterForNewUser")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PostMapping("/authentication")
     public ResponseEntity<JwtResponseDTO> enterForNewUser(@RequestBody AuthorizationUserDTO authorizationUserDTO) {
         log.info("[createToken] >> create token for email: {}", authorizationUserDTO.getEmail());
@@ -35,12 +41,16 @@ public class AuthController {
             throw badCredentialsException;
         }
 
-        String token = userService.setUserToSecurityAndCreateToken(authorizationUserDTO.getEmail());
+        String token = userService.createTokenForUser(authorizationUserDTO.getEmail());
 
         log.info("[createToken] << result is token");
         return ResponseEntity.ok().body(new JwtResponseDTO(token));
     }
 
+    @Operation(summary = "createUser")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PostMapping("/registration")
     public ResponseEntity<JwtResponseDTO> createUser(@RequestBody RegistrationUserDTO registrationUserDTO) {
         log.info("[createUser] >> create user with name: {}", registrationUserDTO.getUserName());

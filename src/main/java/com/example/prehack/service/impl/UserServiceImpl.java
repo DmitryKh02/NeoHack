@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 "Теперь, несите свой эпический и крутой пароль с гордостью и уверенностью. Будьте готовы к потрясающим приключениям и пусть ничто не остановит вас!");
 
 
-        return setUserToSecurityAndCreateToken(savedUser.getEmail());
+        return createTokenForUser(savedUser.getEmail());
     }
 
     @Override
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     @Override
-    public String setUserToSecurityAndCreateToken(String email) {
+    public String createTokenForUser(String email) {
         log.info("[setUserToSecurityAndCreateToken] >> create token for email: {}", email);
 
         UserDetails userDetails = loadUserByUsername(email);
@@ -215,7 +215,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return users;
     }
 
-
     //TODO в будущую реализацию, пока не трогаем
     @Override
     public Boolean userEmailConfirmation(String sesCode) {
@@ -223,17 +222,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public String createSesCode(String userName) {
+    public String createSesCode(String name) {
         return null;
     }
 
-    /**
-     * Обращаем внимание, что храним не логин, а почту
-     *
-     * @param username имя пользователя
-     * @return ?
-     * @throws UsernameNotFoundException имя пользователя не найдено
-     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = getUserByEmail(username);

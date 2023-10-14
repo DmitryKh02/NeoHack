@@ -30,7 +30,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<User> getUser(@PathVariable(value = "id") Long id) {
         log.info("[getUser] >> getAllCompany");
 
         User user = userService.getUserById(id);
@@ -45,7 +45,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/user")
-    public ResponseEntity<?> getInfoAboutThisUser(Principal principal) {
+    public ResponseEntity<User> getInfoAboutThisUser(Principal principal) {
         log.info("[getInfoAboutThisUser] >> principal: {}", principal.getName());
 
         User user = userService.getUserByEmail(principal.getName());
@@ -60,7 +60,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping
-    public ResponseEntity<?> getAllUser() {
+    public ResponseEntity<List<User>> getAllUser() {
         log.info("[getAllUser] >> getAllCompany");
 
         List<User> users = userService.getAllUser();
@@ -81,7 +81,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PutMapping
-    public ResponseEntity<?> changeAllUserInformation(Principal principal,
+    public ResponseEntity<User> changeAllUserInformation(Principal principal,
                                                       @Valid @RequestBody UserInfoDTO userInfoDTO) {
         log.info("[changeAllUserInformation] >> userInfoDTO:{}", userInfoDTO);
 
@@ -99,7 +99,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @DeleteMapping
-    public ResponseEntity<?> deleteUser(Principal principal) {
+    public ResponseEntity<Boolean> deleteUser(Principal principal) {
         log.info("[deleteUser] >> email: {}", principal.getName());
 
         userService.deleteUser(principal.getName());

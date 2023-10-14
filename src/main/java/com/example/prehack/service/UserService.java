@@ -10,81 +10,106 @@ import java.util.List;
 public interface UserService {
 
     /**
-     * Selected user from database by email
+     * Retrieve a user from the database by their email.
      *
-     * @param email user for find
-     * @return user from database
+     * @param email The email of the user to find.
+     * @return The user object associated with the given email.
      */
     User getUserByEmail(String email);
 
+    /**
+     * Retrieve a user from the database by their name.
+     *
+     * @param name The name of the user to find.
+     * @return The user object associated with the given name.
+     */
     User getUserByName(String name);
 
     /**
-     * Selected user from database by id
+     * Retrieve a user from the database by their ID.
      *
-     * @param userId user for find
-     * @return user from database
+     * @param userId The unique identifier of the user.
+     * @return The user object associated with the given ID.
      */
     User getUserById(Long userId);
 
     /**
-     * Registration user and save him in database
+     * Register a new user and save their information in the database.
      *
-     * @param registrationUserDTO user information for registration
-     * @return jws token for user
+     * @param registrationUserDTO Information required for user registration.
+     * @return A JWS (JSON Web Signature) token for the registered user.
      */
     String createUser(RegistrationUserDTO registrationUserDTO);
-    void createManager(RegistrationUserDTO registrationUserDTO);
-    void createTester(RegistrationUserDTO registrationUserDTO);
-
-    @Transactional
-    String setUserToSecurityAndCreateToken(String name);
 
     /**
-     * NOT IMPLEMENTED | Check sesCode to correct
+     * Create a user with the role "MANAGER."
      *
-     * @param sesCode for checking
-     * @return true - sesCode is corrected | false - sesCode uncorrected
+     * @param registrationUserDTO Information about the user.
+     */
+    void createManager(RegistrationUserDTO registrationUserDTO);
+
+    /**
+     * Create a user with the role "TESTER."
+     *
+     * @param registrationUserDTO Information about the user.
+     */
+    void createTester(RegistrationUserDTO registrationUserDTO);
+
+    /**
+     * Create a JWS token for a user.
+     *
+     * @param name The name of the user.
+     * @return The JWS token in string format.
+     */
+    @Transactional
+    String createTokenForUser(String name);
+
+    /**
+     * NOT IMPLEMENTED | Check a session code for correctness.
+     *
+     * @param sesCode The session code to check.
+     * @return true if the session code is correct, false if it's incorrect.
      */
     Boolean userEmailConfirmation(String sesCode);
 
     /**
-     * NOT IMPLEMENTED | Generated ses code for confirmation user Email
+     * NOT IMPLEMENTED | Generate a session code for confirming a user's email.
      *
-     * @param userName
-     * @return
+     * @param name The name of the user.
+     * @return The session code in string format.
      */
-    String createSesCode(String userName);
+    String createSesCode(String name);
 
     /**
-     * Update information about user
+     * Update user information in the database.
      *
-     * @param email      - user email for update
-     * @param requestDTO - missing information about client
-     * @return updated client
+     * @param email The email of the user to update.
+     * @param requestDTO Information for updating the user's profile.
+     * @return The updated user object.
      */
     User fullUpdateUser(String email, UserInfoDTO requestDTO);
 
     /**
-     * Update some information about user
+     * Update some information about a user.
      *
-     * @param name       - user name for update
-     * @param requestDTO - missing information about client
-     * @return updated client
+     * @param name The name of the user to update.
+     * @param requestDTO Information for updating the user's profile.
+     * @return The updated user object.
      */
     User updateSomeUserInfo(String name, UserInfoDTO requestDTO);
 
     /**
-     * Delete user from database
+     * Delete a user from the database based on their email.
      *
-     * @param email for deleting
+     * @param email The email of the user to be deleted.
      */
     void deleteUser(String email);
 
     /**
-     * Method for Admin | Select all user from database
+     * Method for Admin | Retrieve a list of all users from the database.
      *
-     * @return all user
+     * @return A list of all user objects in the database.
      */
     List<User> getAllUser();
+
 }

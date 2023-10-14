@@ -31,7 +31,7 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/user")
-    public ResponseEntity<?> getAllTaskFromUser(Principal principal) {
+    public ResponseEntity<List<Task>> getAllTaskFromUser(Principal principal) {
         log.info("[getAllTaskFromUser] >> email: {}", principal.getName());
 
         List<Task> taskList = taskService.getAllTaskForUserByEmail(principal.getName());
@@ -48,7 +48,7 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PostMapping
-    public ResponseEntity<?> createTask(Principal principal,
+    public ResponseEntity<Task> createTask(Principal principal,
                                         @Valid @RequestBody TaskDTO taskDTO) {
         log.info("[createTask] >> taskDTO: {}", taskDTO);
 
@@ -67,7 +67,7 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PatchMapping("/{taskId}/status")
-    public ResponseEntity<?> updateStatusForTask(Principal principal,
+    public ResponseEntity<Task> updateStatusForTask(Principal principal,
                                                  @PathVariable(value = "taskId") Long taskId,
                                                  @RequestParam(value = "status") Status status) {
         log.info("[updateStatusForTask] >> taskId: {}, status: {}", taskId, status);
@@ -84,7 +84,7 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PatchMapping("/{taskId}/priority")
-    public ResponseEntity<?> updatePriorityForTask(@PathVariable(value = "taskId") Long taskId,
+    public ResponseEntity<Task> updatePriorityForTask(@PathVariable(value = "taskId") Long taskId,
                                                    @RequestParam(value = "priority") Priority priority) {
         log.info("[updatePriorityForTask] >> taskId: {}, priority: {}", taskId, priority);
 

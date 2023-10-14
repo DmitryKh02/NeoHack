@@ -30,7 +30,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/tasks/{taskId}")
-    public ResponseEntity<?> getTaskById(@PathVariable(value = "taskId") Long taskId) {
+    public ResponseEntity<Task> getTaskById(@PathVariable(value = "taskId") Long taskId) {
         log.info("[getTaskById] >> taskId: {}", taskId);
 
         Task task = taskService.getTaskByIdWithoutProject(taskId);
@@ -45,7 +45,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/tasks")
-    public ResponseEntity<?> getAllTask() {
+    public ResponseEntity<List<Task>> getAllTask() {
         log.info("[getAllTask] >> without");
 
         List<Task> taskList = taskService.getAllTask();
@@ -60,7 +60,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/projects/{projectId}/tasks")
-    public ResponseEntity<?> getAllTaskInProject(@PathVariable(value = "projectId") Long projectId) {
+    public ResponseEntity<List<Task>> getAllTaskInProject(@PathVariable(value = "projectId") Long projectId) {
         log.info("[getAllTaskInProject] >> projectId: {}", projectId);
 
         List<Task> taskList = taskService.getAllTaskFromProject(projectId);
@@ -94,7 +94,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PatchMapping("/task/{taskId}/name")
-    public ResponseEntity<?> changeNameAboutTask(@PathVariable(value = "taskId") Long taskId,
+    public ResponseEntity<Task> changeNameAboutTask(@PathVariable(value = "taskId") Long taskId,
                                                  @Valid @RequestBody TaskDTO taskDTO) {
         log.info("[changeNameOfTask] >> taskId:{}, taskDTO: {}", taskId, taskDTO);
 
@@ -110,7 +110,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PatchMapping("/task/{taskId}")
-    public ResponseEntity<?> setUserToTask(@PathVariable(value = "taskId") Long taskId,
+    public ResponseEntity<Task> setUserToTask(@PathVariable(value = "taskId") Long taskId,
                                            @Valid @RequestBody UserEmailsForProjectDTO userEmailsForProjectDTO) {
         log.info("[changeTaskInformation] >> taskId:{}, userEmailsForProjectDTO: {}", taskId, userEmailsForProjectDTO);
 
@@ -128,7 +128,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PutMapping("/task/{taskId}")
-    public ResponseEntity<?> changeTaskInformation(@PathVariable(value = "taskId") Long taskId,
+    public ResponseEntity<Task> changeTaskInformation(@PathVariable(value = "taskId") Long taskId,
                                                    @Valid @RequestBody TaskDTO taskDTO) {
         log.info("[changeTaskInformation] >> taskId:{}, taskDTO: {}", taskId, taskDTO);
 
@@ -146,7 +146,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @DeleteMapping("/task/{taskId}")
-    public ResponseEntity<?> deleteTask(@PathVariable(value = "taskId") Long taskId) {
+    public ResponseEntity<Boolean> deleteTask(@PathVariable(value = "taskId") Long taskId) {
         log.info("[deleteTask] >> taskId: {}", taskId);
 
         taskService.deleteTask(taskId);

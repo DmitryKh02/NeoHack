@@ -30,7 +30,7 @@ public class ProjectSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping
-    public ResponseEntity<?> getAllProject() {
+    public ResponseEntity<List<Project>> getAllProject() {
         log.info("[getAllProject] >> without");
 
         List<Project> projects = projectService.getAllProject();
@@ -47,7 +47,7 @@ public class ProjectSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PostMapping
-    public ResponseEntity<?> createProject(Principal principal,
+    public ResponseEntity<Project> createProject(Principal principal,
                                            @Valid @RequestBody ProjectDTO projectDTO) {
         log.info("[createProject] >> projectDTO: {}", projectDTO);
 
@@ -65,7 +65,7 @@ public class ProjectSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PatchMapping("/{projectId}/user")
-    public ResponseEntity<?> setUserToProject(@PathVariable(value = "projectId") Long projectId,
+    public ResponseEntity<Project> setUserToProject(@PathVariable(value = "projectId") Long projectId,
                                               @Valid @RequestBody UserEmailsForProjectDTO userEmailsForProjectDTO) {
         log.info("[addUserForProject] >> projectId: {} , userEmailsForProjectDTO: {}", projectId, userEmailsForProjectDTO);
 
@@ -83,7 +83,7 @@ public class ProjectSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PutMapping("/{projectId}")
-    public ResponseEntity<?> changeProjectInformation(@PathVariable(value = "projectId") Long projectId,
+    public ResponseEntity<Project> changeProjectInformation(@PathVariable(value = "projectId") Long projectId,
                                                       @Valid @RequestBody ProjectDTO projectDTO) {
         log.info("[changeProjectInformation] >> projectId:{}, projectDTO: {}", projectId, projectDTO);
 
@@ -101,7 +101,7 @@ public class ProjectSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<?> deleteProject(@PathVariable(value = "projectId") Long projectId) {
+    public ResponseEntity<Boolean> deleteProject(@PathVariable(value = "projectId") Long projectId) {
         log.info("[deleteProject] >> projectId: {}", projectId);
 
         projectService.deleteProject(projectId);

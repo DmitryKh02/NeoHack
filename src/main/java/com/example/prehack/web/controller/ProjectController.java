@@ -30,7 +30,7 @@ public class ProjectController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/{projectId}")
-    public ResponseEntity<?> getInfoAboutProject(@PathVariable(value = "projectId") Long projectId) {
+    public ResponseEntity<Project> getInfoAboutProject(@PathVariable(value = "projectId") Long projectId) {
         log.info("[getAllTaskInProject] >> projectId: {}", projectId);
 
         Project project = projectService.getProjectById(projectId);
@@ -45,7 +45,7 @@ public class ProjectController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/user")
-    public ResponseEntity<?> getAllProjectForUser(Principal principal) {
+    public ResponseEntity<List<Project>> getAllProjectForUser(Principal principal) {
         log.info("[getAllProject] >> without");
 
         List<Project> projects = projectService.getAllProjectForUserByEmail(principal.getName());

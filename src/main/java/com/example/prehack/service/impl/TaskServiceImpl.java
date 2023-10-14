@@ -29,8 +29,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ProjectService projectService;
     private final UserService userService;
-
     private final RoleService roleService;
+
     private final TaskMapper taskMapper;
 
     @Override
