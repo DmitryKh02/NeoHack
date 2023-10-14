@@ -1,5 +1,6 @@
 package com.example.prehack.web.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,11 +10,13 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthorizationUserDTO {
+
     @NotNull
     @Email
     private String email;

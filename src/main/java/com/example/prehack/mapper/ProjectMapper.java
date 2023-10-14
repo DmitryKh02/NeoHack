@@ -8,7 +8,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ProjectMapper {
@@ -18,7 +19,7 @@ public interface ProjectMapper {
     Project projectDTOToProject(ProjectDTO requestDTO);
 
     @Named("timestampToLocalDate")
-    static Timestamp timestampToLocalDate(LocalDateTime date) {
-        return Timestamp.valueOf(date);
+    static Timestamp timestampToLocalDate(LocalDate date) {
+        return Timestamp.valueOf(date.atTime(LocalTime.now()));
     }
 }

@@ -38,6 +38,8 @@ public interface UserService {
     @Transactional
     String setUserToSecurityAndCreateToken(String name);
 
+    List<User> getAllUserByProject(Long projectId);
+
     /**
      * NOT IMPLEMENTED | Check sesCode to correct
      *
