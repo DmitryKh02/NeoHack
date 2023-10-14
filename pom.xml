@@ -14,7 +14,7 @@
     <name>pre-hack</name>
     <description>pre-hack</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.version>3.8.1</maven.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>

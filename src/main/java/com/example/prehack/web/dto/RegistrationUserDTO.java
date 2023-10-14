@@ -27,7 +27,7 @@ public class RegistrationUserDTO {
     private String email;
 
     @NotNull
-    @Length(min = 2, max = 50, message = "firstName length must be from 2 to 30")
+    @Length(min = 8, max = 50, message = "firstName length must be from 2 to 30")
     private String password;
 
 }

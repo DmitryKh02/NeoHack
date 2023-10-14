@@ -45,10 +45,10 @@ class TaskServiceImplTest {
         Long id = random(Long.class);
         Task task = Task.builder().build();
 
-        when(taskRepository.findById(id)).thenReturn(Optional.ofNullable(task));
+        when(taskRepository.findTaskWithoutProject(any())).thenReturn(Optional.ofNullable(task));
 
         taskService.getTaskByIdWithoutProject(id);
-        assertEquals(task, taskRepository.findById(id).get());
+        assertEquals(task, taskRepository.findTaskWithoutProject(id).get());
     }
 
     @Test
