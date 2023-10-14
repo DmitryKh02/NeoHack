@@ -1,5 +1,5 @@
 jwt:
-  lifetime: 30m
+  lifetime: 24h
 
 spring:
   datasource:

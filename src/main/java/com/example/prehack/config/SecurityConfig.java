@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .cors().and().csrf().disable()
+                //.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/secure/**").hasRole("MANAGER")
                 .antMatchers("/users/**").authenticated()
