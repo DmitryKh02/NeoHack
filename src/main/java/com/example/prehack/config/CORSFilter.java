@@ -11,7 +11,7 @@ public class CORSFilter implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedOriginPatterns("http://localhost:3000/*")
+                .allowedOriginPatterns("http://localhost:3000")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
