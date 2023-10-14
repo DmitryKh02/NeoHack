@@ -15,6 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -30,8 +35,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                //.cors().and().csrf().disable()
+//                .cors().and().csrf().disable()
                 .authorizeRequests()
+                /*.antMatchers("/users/**").authenticated()
+                .antMatchers("/admins/**").hasRole("ADMIN")*/
                 .antMatchers("/secure/**").hasRole("MANAGER")
                 .antMatchers("/users/**").authenticated()
                 .antMatchers("/tasks/**").authenticated()
