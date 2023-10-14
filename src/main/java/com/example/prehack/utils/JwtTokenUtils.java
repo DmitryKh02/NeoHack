@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class JwtTokenUtils {
     @Value("${jwt.lifetime}")
     private Duration jwtLifetime;
-
     private final SecretKey key = Jwts.SIG.HS256.key().build();
 
     private Claims getAllClaimsFromToken(String token) {
