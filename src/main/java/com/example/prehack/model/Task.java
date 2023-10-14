@@ -42,6 +42,7 @@ public class Task {
     @Column(name = "data_finish")
     private Timestamp dataFinish;
 
+
     @Type(type = "json")
     @Column(name = "status_history", columnDefinition = "json")
     private List<StatusHistory> statusHistories;
@@ -62,6 +63,7 @@ public class Task {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
+
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)

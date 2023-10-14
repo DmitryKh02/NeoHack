@@ -20,4 +20,10 @@
     </changeSet>
 
     <include file="v-1.0.1/db.13-10-2023-changelog-v.1.0.1.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="14-10-2023-alter-status_history" author="Dmitrii">
+        <tagDatabase tag="v-1.0.2"/>
+    </changeSet>
+
+    <include file="v-1.0.2/db.14-10-2023-changelog-v.1.0.2.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

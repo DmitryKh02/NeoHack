@@ -65,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
 
         User user = userService.getUserById(userId);
 
-        List<Task> tasks = taskRepository.findAllByUserContaining(user);
+        List<Task> tasks = null;//taskRepository.findAllByUsersContaining(user);
 
         log.info("[getAllUsersTask] << result: {}", tasks);
 
@@ -165,6 +165,7 @@ public class TaskServiceImpl implements TaskService {
     public Task setUserForTask(Long taskId, String userEmail) {
         log.info("[setUserForTask] >> taskId: {}, userEmail: {}", taskId, userEmail);
         Task task = getTaskById(taskId);
+
 
         task.setUser(userService.getUserByEmail(userEmail));
 
