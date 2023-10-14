@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final UserService userService;
@@ -43,7 +45,7 @@ public class AuthController {
 
         String token = userService.createTokenForUser(authorizationUserDTO.getEmail());
 
-        log.info("[createToken] << result is token");
+        log.info("[createToken] << result is token: {}", token);
         return ResponseEntity.ok().body(new JwtResponseDTO(token));
     }
 
@@ -61,5 +63,4 @@ public class AuthController {
 
         return ResponseEntity.ok().body(new JwtResponseDTO(token));
     }
-
 }
