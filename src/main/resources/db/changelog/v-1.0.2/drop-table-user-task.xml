@@ -5,7 +5,7 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-user-table" author="Dmitrii">
         <sql>
-            DROP TABLE user_task;
+            DROP TABLE user_task_server;
         </sql>
     </changeSet>
 </databaseChangeLog>

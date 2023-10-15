@@ -40,18 +40,34 @@ public class AdminController {
         roleRepository.save(Role.builder().name("ROLE_TESTER").build());
         roleRepository.save(Role.builder().name("ROLE_MANAGER").build());
 
-        userService.createUser(new RegistrationUserDTO("user1","user1@gmail.com","100"));
-        userService.createUser(new RegistrationUserDTO("user2","user2@gmail.com","100"));
-        userService.createUser(new RegistrationUserDTO("user3","user3@gmail.com","100"));
-        userService.createUser(new RegistrationUserDTO("user4","user4@gmail.com","100"));
+        userService.createUser(new RegistrationUserDTO("user1","user1@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user2","user2@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user3","user3@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user4","user4@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user5","user5@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user6","user6@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user7","user7@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user8","user8@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user9","user9@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user10","user10@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user11","user11@gmail.com","password"), true);
+        userService.createUser(new RegistrationUserDTO("user12","user12@gmail.com","password"), true);
 
-        userService.createTester(new RegistrationUserDTO("tester1","tester1@gmail.com","100"));
-        userService.createTester(new RegistrationUserDTO("tester2","tester2@gmail.com","100"));
-        userService.createTester(new RegistrationUserDTO("tester3","tester3@gmail.com","100"));
-        userService.createTester(new RegistrationUserDTO("tester4","tester4@gmail.com","100"));
+        userService.createTester(new RegistrationUserDTO("tester1","tester1@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester2","tester2@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester3","tester3@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester4","tester4@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester5","tester5@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester6","tester6@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester7","tester7@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester8","tester8@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester9","tester9@gmail.com","password"));
+        userService.createTester(new RegistrationUserDTO("tester10","tester10@gmail.com","password"));
 
-        userService.createManager(new RegistrationUserDTO("manager1","manager1@gmail.com","100"));
-        userService.createManager(new RegistrationUserDTO("manager2","manager2@gmail.com","100"));
+        userService.createManager(new RegistrationUserDTO("manager1","manager1@gmail.com","password"));
+        userService.createManager(new RegistrationUserDTO("manager2","manager2@gmail.com","password"));
+        userService.createManager(new RegistrationUserDTO("manager3","manager3@gmail.com","password"));
+        userService.createManager(new RegistrationUserDTO("manager4","manager4@gmail.com","password"));
 
         log.info("[creatAll] << result");
 

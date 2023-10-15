@@ -1,8 +1,12 @@
 package com.example.prehack.web.controller;
 
+import com.example.prehack.mapper.ProjectMapper;
 import com.example.prehack.model.Project;
+import com.example.prehack.model.Task;
 import com.example.prehack.service.ProjectService;
 import com.example.prehack.web.dto.ProjectDTO;
+import com.example.prehack.web.dto.ReqProject;
+import com.example.prehack.web.dto.ReqTask;
 import com.example.prehack.web.dto.UserEmailsForProjectDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -24,20 +29,26 @@ public class ProjectSecurityController {
 
     private final ProjectService projectService;
 
+    private final ProjectMapper projectMapper;
     //region Get methods
     @Operation(summary = "getAllProject")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProject() {
+    public ResponseEntity<List<ReqProject>> getAllProject() {
         log.info("[getAllProject] >> without");
 
         List<Project> projects = projectService.getAllProject();
+        List<ReqProject> reqProjects = new LinkedList<>();
 
-        log.info("[getAllProject] << result: {}", projects);
+        for (Project project : projects){
+            reqProjects.add(projectMapper.projectDTOToProject(project));
+        }
 
-        return ResponseEntity.ok().body(projects);
+        log.info("[getAllProject] << result: {}", reqProjects);
+
+        return ResponseEntity.ok().body(reqProjects);
     }
     //endregion
 

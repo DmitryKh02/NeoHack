@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    @Query(value = "select task0_.*\n from tasks task0_\n where task0_.task_id= :taskId",
+    @Query(value = "select task0_.*\n from tasks_server task0_\n where task0_.task_id= :taskId",
             nativeQuery = true)
     Optional<Task> findTaskWithoutProject(@Param("taskId") Long taskId);
 

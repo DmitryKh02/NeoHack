@@ -5,14 +5,14 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-user-table" author="Dmitrii">
         <sql>
-            CREATE TABLE IF NOT EXISTS public.users
+            CREATE TABLE IF NOT EXISTS public.users_server
             (
                 user_id bigserial NOT NULL ,
                 user_name varchar(255) NOT NULL,
                 email varchar(255) NOT NULL,
                 password varchar(255) NOT NULL,
-                CONSTRAINT users_pkey PRIMARY KEY (user_id),
-                CONSTRAINT email_unique UNIQUE (email)
+                CONSTRAINT users_pkey_server PRIMARY KEY (user_id),
+                CONSTRAINT email_unique_server UNIQUE (email)
             );
         </sql>
     </changeSet>

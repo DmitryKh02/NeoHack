@@ -5,17 +5,17 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-user-role-table" author="Dmitrii">
         <sql>
-            CREATE TABLE IF NOT EXISTS public.user_role
+            CREATE TABLE IF NOT EXISTS public.user_server_role_server
             (
                 user_id  bigserial NOT NULL,
                 role_id bigserial NOT NULL,
-                CONSTRAINT user_role_pkey PRIMARY KEY (user_id, role_id),
-                CONSTRAINT jasijjtsgnsdsakgsknnslndfnj FOREIGN KEY (user_id)
-                REFERENCES public.users (user_id) MATCH SIMPLE
+                CONSTRAINT user_role_pkey_server PRIMARY KEY (user_id, role_id),
+                CONSTRAINT jasijjtsgnsdsakgsknnslndfnjserver FOREIGN KEY (user_id)
+                REFERENCES public.users_server (user_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION,
-                CONSTRAINT gtbwebgsldhbsuhhgdgudsghuds FOREIGN KEY (role_id)
-                REFERENCES public.role (role_id) MATCH SIMPLE
+                CONSTRAINT gtbwebgsldhbsuhhgdgudsghudsserver FOREIGN KEY (role_id)
+                REFERENCES public.role_server (role_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 );

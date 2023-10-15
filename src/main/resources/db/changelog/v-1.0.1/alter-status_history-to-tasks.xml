@@ -5,7 +5,7 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-user-task-table" author="Dmitrii">
         <sql>
-            ALTER TABLE tasks
+            ALTER TABLE tasks_server
             ADD COLUMN status_history jsonb;
         </sql>
     </changeSet>

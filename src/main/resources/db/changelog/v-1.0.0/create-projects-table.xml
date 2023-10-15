@@ -5,7 +5,7 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-projects-table" author="Dmitrii">
         <sql>
-            CREATE TABLE IF NOT EXISTS public.projects
+            CREATE TABLE IF NOT EXISTS public.projects_server
             (
                 project_id bigserial NOT NULL,
                 data_start timestamp,
@@ -13,7 +13,7 @@
                 customer varchar(255),
                 description varchar(255),
                 name varchar(255),
-                CONSTRAINT projects_pkey PRIMARY KEY (project_id)
+                CONSTRAINT projects_pkey_server PRIMARY KEY (project_id)
             );
         </sql>
     </changeSet>

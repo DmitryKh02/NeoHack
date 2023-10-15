@@ -5,13 +5,13 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-user-table" author="Dmitrii">
         <sql>
-            ALTER TABLE users
+            ALTER TABLE users_server
                 ADD COLUMN task_id bigint;
 
-            ALTER TABLE users
-            ADD CONSTRAINT wejibytbweugfnvspuithwehhdh
+            ALTER TABLE users_server
+            ADD CONSTRAINT wejibytbweugfnvspuithwehhdhserver
             FOREIGN KEY (task_id)
-            REFERENCES public.tasks (task_id) MATCH SIMPLE
+            REFERENCES public.tasks_server (task_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
         </sql>

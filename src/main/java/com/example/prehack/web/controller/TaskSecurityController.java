@@ -1,9 +1,11 @@
 package com.example.prehack.web.controller;
 
 
+import com.example.prehack.mapper.TaskMapper;
 import com.example.prehack.model.Task;
 import com.example.prehack.service.TaskService;
 import com.example.prehack.web.dto.EditTaskDTO;
+import com.example.prehack.web.dto.ReqTask;
 import com.example.prehack.web.dto.TaskDTO;
 import com.example.prehack.web.dto.UserEmailsForProjectDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -25,20 +28,22 @@ public class TaskSecurityController {
 
     private final TaskService taskService;
 
+    private final TaskMapper taskMapper;
+
     //region Get methods
     @Operation(summary = "get Task by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/tasks/{taskId}")
-    public ResponseEntity<Task> getTaskById(@PathVariable(value = "taskId") Long taskId) {
+    public ResponseEntity<ReqTask> getTaskById(@PathVariable(value = "taskId") Long taskId) {
         log.info("[getTaskById] >> taskId: {}", taskId);
 
         Task task = taskService.getTaskByIdWithoutProject(taskId);
 
         log.info("[getTaskById] << result: {}", task);
 
-        return ResponseEntity.ok().body(task);
+        return ResponseEntity.ok().body(taskMapper.TaskToReqTask(task));
     }
 
     @Operation(summary = "getAllTask")
@@ -46,14 +51,19 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/tasks")
-    public ResponseEntity<List<Task>> getAllTask() {
+    public ResponseEntity<List<ReqTask>> getAllTask() {
         log.info("[getAllTask] >> without");
 
         List<Task> taskList = taskService.getAllTask();
 
+        List<ReqTask> reqTasks = new LinkedList<>();
+
+        for (Task task : taskList){
+            reqTasks.add(taskMapper.TaskToReqTask(task));
+        }
         log.info("[getAllTask] << result: {}", taskList);
 
-        return ResponseEntity.ok().body(taskList);
+        return ResponseEntity.ok().body(reqTasks);
     }
 
     @Operation(summary = "getAllTaskInProject")
@@ -61,14 +71,19 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "400", description = "Validation failed for some argument. Invalid input supplied"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @GetMapping("/projects/{projectId}/tasks")
-    public ResponseEntity<List<Task>> getAllTaskInProject(@PathVariable(value = "projectId") Long projectId) {
+    public ResponseEntity<List<ReqTask>> getAllTaskInProject(@PathVariable(value = "projectId") Long projectId) {
         log.info("[getAllTaskInProject] >> projectId: {}", projectId);
 
         List<Task> taskList = taskService.getAllTaskFromProject(projectId);
 
+        List<ReqTask> reqTasks = new LinkedList<>();
+
+        for (Task task : taskList){
+            reqTasks.add(taskMapper.TaskToReqTask(task));
+        }
         log.info("[getAllTaskInProject] << result: {}", taskList);
 
-        return ResponseEntity.ok().body(taskList);
+        return ResponseEntity.ok().body(reqTasks);
     }
 
     //endregion

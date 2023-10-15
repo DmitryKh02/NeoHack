@@ -5,17 +5,17 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-user-task-table" author="Dmitrii">
         <sql>
-            CREATE TABLE IF NOT EXISTS public.user_task
+            CREATE TABLE IF NOT EXISTS public.user_task_server
             (
                 user_id  bigserial NOT NULL,
                 task_id bigserial NOT NULL,
-                CONSTRAINT user_task_pkey PRIMARY KEY (user_id, task_id),
-                CONSTRAINT bsggsanjgjdjfgkjjslkfjdtewl FOREIGN KEY (user_id)
-                REFERENCES public.users (user_id) MATCH SIMPLE
+                CONSTRAINT user_task_pkey_server PRIMARY KEY (user_id, task_id),
+                CONSTRAINT bsggsanjgjdjfgkjjslkfjdtewlserver FOREIGN KEY (user_id)
+                REFERENCES public.users_server (user_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION,
-                CONSTRAINT wejibytbweugfnvspuithwehwet FOREIGN KEY (task_id)
-                REFERENCES public.tasks (task_id) MATCH SIMPLE
+                CONSTRAINT wejibytbweugfnvspuithwehwetserver FOREIGN KEY (task_id)
+                REFERENCES public.tasks_server (task_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 );

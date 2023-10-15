@@ -5,11 +5,11 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-role-table" author="Dmitrii">
         <sql>
-            CREATE TABLE IF NOT EXISTS public.role
+            CREATE TABLE IF NOT EXISTS public.role_server
             (
                 role_id bigserial NOT NULL,
                 name varchar(255),
-                CONSTRAINT role_pkey PRIMARY KEY (role_id)
+                CONSTRAINT role_pkey_server PRIMARY KEY (role_id)
             );
         </sql>
     </changeSet>

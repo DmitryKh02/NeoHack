@@ -13,9 +13,12 @@ spring:
       max-age: 3600
   datasource:
     url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGNAME:postgres}
-    #url: jdbc:postgresql://rc1b-m17jig7pms2njiie.mdb.yandexcloud.net:6432?sslmode=verify-full&$dbname=cnrprod-team-58500&user=cnrprod-team-58500&target_session_attrs=read-write&ssl=true
-    password: ${PGPASSWORD:1234}
-    #password: ${PGPASSWORD:d03UNgxXHkCt}
+    #url: jdbc:postgresql://rc1b-m17jig7pms2njiie.mdb.yandexcloud.net:6432?sslmode=verify-full&target_session_attrs=read-write&ssl=true/cnrprod-team-58500
+    #url: jdbc:postgresql://rc1b-m17jig7pms2njiie.mdb.yandexcloud.net:6432/cnrprod-team-58500?sslmode=verify-full&user=cnrprod-team-58500&target_session_attrs=read-write&sslmode=require
+    #url: jdbc:postgresql://rc1b-m17jig7pms2njiie.mdb.yandexcloud.net:6432&$dbname=cnrprod-team-58500&user=&target_session_attrs=read-write&ssl=true
+    #url: jdbc:postgresql://rc1b-m17jig7pms2njiie.mdb.yandexcloud.net:6432/cnrprod-team-58500&user=&target_session_attrs=read-write&ssl=true
+    password: ${PGPASSWORD:ColGprK55sLiznBUfqdT}
+    #password: ${PGPASSWORD:in6dah0aiw6aich0ECaesholairahl6V}
     username: postgres
     #username: cnrprod-team-58500
     driver-class-name: org.postgresql.Driver

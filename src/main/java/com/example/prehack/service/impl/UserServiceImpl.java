@@ -128,6 +128,18 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public void createUser(RegistrationUserDTO registrationUserDTO, Boolean admin) {
+        Role role = roleService.getRoleByName("ROLE_USER");
+
+        User user = userMapper.registrationUserDTOToUser(registrationUserDTO);
+        user.setPassword(passwordEncoder.encode(registrationUserDTO.getPassword()));
+        user.setRoles(List.of(role));
+        userRepository.save(user);
+
+        log.info("[createUser] << result is ROLE_USER");
+    }
+
+    @Override
     public void createManager(RegistrationUserDTO registrationUserDTO) {
         Role role = roleService.getRoleByName("ROLE_MANAGER");
 
@@ -136,7 +148,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setRoles(List.of(role));
         userRepository.save(user);
 
-        log.info("[createUser] << result is token for user");
+        log.info("[createUser] << result is ROLE_MANAGER");
     }
 
     @Override
@@ -148,7 +160,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setRoles(List.of(role));
         userRepository.save(user);
 
-        log.info("[createUser] << result is token for user");
+        log.info("[createUser] << result is ROLE_TESTER");
     }
 
     @Transactional

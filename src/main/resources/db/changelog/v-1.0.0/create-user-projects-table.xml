@@ -5,17 +5,17 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-user-project-table" author="Dmitrii">
         <sql>
-            CREATE TABLE IF NOT EXISTS public.user_project
+            CREATE TABLE IF NOT EXISTS public.user_server_project_server
             (
                 user_id  bigserial NOT NULL,
                 project_id bigserial NOT NULL,
-                CONSTRAINT user_project_pkey PRIMARY KEY (user_id, project_id),
-                CONSTRAINT jjksdfdgsbtrywegnsbfjdswqiq FOREIGN KEY (user_id)
-                REFERENCES public.users (user_id) MATCH SIMPLE
+                CONSTRAINT user_project_pkey_server PRIMARY KEY (user_id, project_id),
+                CONSTRAINT jjksdfdgsbtrywegnsbfjdswqiqserver FOREIGN KEY (user_id)
+                REFERENCES public.users_server (user_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION,
-                CONSTRAINT mnvzxsahubagpprtqlfvabauptq FOREIGN KEY (project_id)
-                REFERENCES public.projects (project_id) MATCH SIMPLE
+                CONSTRAINT mnvzxsahubagpprtqlfvabauptqserver FOREIGN KEY (project_id)
+                REFERENCES public.projects_server (project_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
                 );

@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "projects")
+@Table(name = "projects_server")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,7 @@ public class Project {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_project",
+            name = "user_server_project_server",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )

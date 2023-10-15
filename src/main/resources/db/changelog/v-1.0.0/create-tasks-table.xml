@@ -5,7 +5,7 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet id="create-tasks-table" author="Dmitrii">
         <sql>
-            CREATE TABLE IF NOT EXISTS public.tasks
+            CREATE TABLE IF NOT EXISTS public.tasks_server
             (
                 task_id bigserial NOT NULL,
                 data_start timestamp,
@@ -15,9 +15,9 @@
                 priority varchar(255),
                 status varchar(255),
                 project_id bigint,
-                CONSTRAINT tasks_pkey PRIMARY KEY (task_id),
-                CONSTRAINT fkd0im63f67sps1ty7956t9ahn4 FOREIGN KEY (project_id)
-                REFERENCES public.projects (project_id) MATCH SIMPLE
+                CONSTRAINT tasks_pkey_server PRIMARY KEY (task_id),
+                CONSTRAINT fkd0im63f67sps1ty7956t9ahn4server FOREIGN KEY (project_id)
+                REFERENCES public.projects_server (project_id) MATCH SIMPLE
                 ON UPDATE NO ACTION
                 ON DELETE NO ACTION
             );

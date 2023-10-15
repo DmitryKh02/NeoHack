@@ -16,9 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUserName(String userName);
 
-    @Query(value = "select u.* from projects p " +
-            "inner join user_project on p.project_id = user_project.project_id " +
-            "inner join users u on user_project.user_id = u.user_id " +
+    @Query(value = "select u.* from projects_server p " +
+            "inner join user_server_project_server on p.project_id = user_server_project_server.project_id " +
+            "inner join users_server u on user_server_project_server.user_id = u.user_id " +
             "where p.project_id = :projectId",
             nativeQuery = true)
     List<User> findAllUserInProject(@Param("projectId") Long projectId);

@@ -41,6 +41,15 @@ public interface UserService {
      */
     String createUser(RegistrationUserDTO registrationUserDTO);
 
+
+    /**
+     /**
+     * Create a user with the role "USER."
+     *
+     * @param registrationUserDTO Information about the user.
+     * @param admin with user created by admin
+     */
+    void createUser(RegistrationUserDTO registrationUserDTO, Boolean admin);
     /**
      * Create a user with the role "MANAGER."
      *
