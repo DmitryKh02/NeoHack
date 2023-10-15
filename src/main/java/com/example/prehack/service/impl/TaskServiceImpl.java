@@ -179,15 +179,7 @@ public class TaskServiceImpl implements TaskService {
         log.info("[setUserForTask] >> taskId: {}, userEmail: {}", taskId, userEmail);
         Task task = getTaskByIdWithoutProject(taskId);
 
-
         task.setUser(userService.getUserByEmail(userEmail));
-
-/*        List<User> users = task.getUsers();
-        if (users.isEmpty()) {
-            task.setUsers(List.of(user));
-        } else {
-            task.getUsers().add(user);
-        }*/
 
         Task savedTask = taskRepository.save(task);
 

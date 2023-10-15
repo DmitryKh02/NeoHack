@@ -82,7 +82,7 @@ public class ProjectServiceImpl implements ProjectService {
         Set<User> users = new HashSet<>();
         users.add(userService.getUserByEmail(emailCreator));
 
-        if (!projectDTO.getUserEmails().isEmpty()) {
+        if (projectDTO.getUserEmails() != null || !projectDTO.getUserEmails().isEmpty()) {
             for (UserEmailsForProjectDTO email : projectDTO.getUserEmails()) {
                 users.add(userService.getUserByEmail(email.getEmail()));
             }
@@ -108,8 +108,31 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProject(Long projectId, ProjectDTO projectDTO) {
-        //TODO Реализовать
-        return null;
+        log.info("[updateProject] >> projectId: {}, projectDTO, {}", projectId, projectDTO);
+
+        Project projectUpdated = getProjectById(projectId);
+
+        Set<User> usersWas = projectUpdated.getUsers();
+
+        Project project = projectMapper.projectDTOToProject(projectDTO);
+
+        if (projectDTO.getUserEmails() != null || !projectDTO.getUserEmails().isEmpty()) {
+            for (UserEmailsForProjectDTO email : projectDTO.getUserEmails()) {
+                User us = userService.getUserByEmail(email.getEmail());
+                if (!usersWas.contains(us)) {
+                    usersWas.add(us);
+                }
+            }
+        }
+
+        project.setProjectId(projectUpdated.getProjectId());
+        project.setUsers(usersWas);
+
+        project = projectRepository.save(project);
+
+        log.info("[updateProject] << result : {}", project);
+
+        return project;
     }
 
     @Override

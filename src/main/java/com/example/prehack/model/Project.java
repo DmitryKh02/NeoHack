@@ -45,6 +45,4 @@ public class Project {
     )
     private Set<User> users = new HashSet<>();
 
-/*    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    private List<Task> taskList = new LinkedList<>();*/
 }
