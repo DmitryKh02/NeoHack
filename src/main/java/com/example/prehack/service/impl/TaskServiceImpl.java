@@ -129,7 +129,7 @@ public class TaskServiceImpl implements TaskService {
         if (!user.getRoles().contains(roleManager)) {
             task.setName("");
         } else {
-            if (taskDTO.getProjectId() != null) {
+            if (taskDTO.getProjectId() != null || !taskDTO.getProjectId().equals(0L)) {
                 task.setProject(projectService.getProjectById(taskDTO.getProjectId()));
             }
         }
