@@ -156,7 +156,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task savedTask = taskRepository.save(newTask);
 
-        setUserForTask(savedTask.getTaskId(), userService.getUserById(taskDTO.getUserId()).getEmail());
+        setUserForTask(savedTask.getTaskId(), taskDTO.getUserEmail());
 
         log.info("[setFullInfoForTask] << result : {}", savedTask);
 
