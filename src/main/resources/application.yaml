@@ -19,8 +19,8 @@ spring:
     #url: jdbc:postgresql://rc1b-m17jig7pms2njiie.mdb.yandexcloud.net:6432/cnrprod-team-58500&user=&target_session_attrs=read-write&ssl=true
     password: ${PGPASSWORD:1234}
     #password: ${PGPASSWORD:in6dah0aiw6aich0ECaesholairahl6V}##
-    username: postgres##
-    #username: cnrprod-team-58500
+    username: postgres
+    #username: cnrprod-team-58500##
     #driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
