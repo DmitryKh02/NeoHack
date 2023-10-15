@@ -77,12 +77,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = projectMapper.projectDTOToProject(projectDTO);
 
-        project = projectRepository.save(project);
-
         Set<User> users = new HashSet<>();
         users.add(userService.getUserByEmail(emailCreator));
 
-        if (projectDTO.getUserEmails() != null || !projectDTO.getUserEmails().isEmpty()) {
+        if (projectDTO.getUserEmails() != null) {
             for (UserEmailsForProjectDTO email : projectDTO.getUserEmails()) {
                 users.add(userService.getUserByEmail(email.getEmail()));
             }
