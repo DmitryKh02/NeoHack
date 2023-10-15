@@ -3,6 +3,7 @@ package com.example.prehack.web.controller;
 
 import com.example.prehack.model.Task;
 import com.example.prehack.service.TaskService;
+import com.example.prehack.web.dto.EditTaskDTO;
 import com.example.prehack.web.dto.TaskDTO;
 import com.example.prehack.web.dto.UserEmailsForProjectDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -129,7 +130,7 @@ public class TaskSecurityController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")})
     @PutMapping("/task/{taskId}")
     public ResponseEntity<Task> changeTaskInformation(@PathVariable(value = "taskId") Long taskId,
-                                                   @Valid @RequestBody TaskDTO taskDTO) {
+                                                   @Valid @RequestBody EditTaskDTO taskDTO) {
         log.info("[changeTaskInformation] >> taskId:{}, taskDTO: {}", taskId, taskDTO);
 
         Task task = taskService.setFullInfoForTask(taskId, taskDTO);

@@ -3,6 +3,7 @@ package com.example.prehack.service;
 import com.example.prehack.model.Task;
 import com.example.prehack.model.enumformodel.Priority;
 import com.example.prehack.model.enumformodel.Status;
+import com.example.prehack.web.dto.EditTaskDTO;
 import com.example.prehack.web.dto.TaskDTO;
 
 import java.util.List;
@@ -72,7 +73,7 @@ public interface TaskService {
      * @param taskDTO The updated task data to set.
      * @return The updated task object with the new information.
      */
-    Task setFullInfoForTask(Long taskId, TaskDTO taskDTO);
+    Task setFullInfoForTask(Long taskId, EditTaskDTO taskDTO);
 
     /**
      * Set the priority of a task.
@@ -117,5 +118,6 @@ public interface TaskService {
      * @param taskId The unique identifier of the task to be deleted.
      */
     void deleteTask(Long taskId);
+
 
 }

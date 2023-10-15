@@ -13,6 +13,7 @@ import com.example.prehack.service.ProjectService;
 import com.example.prehack.service.RoleService;
 import com.example.prehack.service.TaskService;
 import com.example.prehack.service.UserService;
+import com.example.prehack.web.dto.EditTaskDTO;
 import com.example.prehack.web.dto.TaskDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -143,17 +144,19 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public Task setFullInfoForTask(Long taskId, TaskDTO taskDTO) {
+    public Task setFullInfoForTask(Long taskId, EditTaskDTO taskDTO) {
         log.info("[setFullInfoForTask] >> taskDTO: {}", taskDTO);
 
         Task taskForUpdate = getTaskByIdWithoutProject(taskId);
-        Task newTask = taskMapper.taskDTOToTask(taskDTO);
+        Task newTask = taskMapper.editTaskDTOToTask(taskDTO);
 
         newTask.setTaskId(taskForUpdate.getTaskId());
         newTask.setStatusHistories(taskForUpdate.getStatusHistories());
         newTask.setProject(taskForUpdate.getProject());
 
         Task savedTask = taskRepository.save(newTask);
+
+        setUserForTask(savedTask.getTaskId(), userService.getUserById(taskDTO.getUserId()).getEmail());
 
         log.info("[setFullInfoForTask] << result : {}", savedTask);
 
